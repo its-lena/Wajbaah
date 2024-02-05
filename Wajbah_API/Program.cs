@@ -2,7 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Wajbah_API.Data;
 using Wajbah_API.Models;
+using Wajbah_API.Repository.IRepository;
+using Wajbah_API.Repository;
 using Wajbah_API.Services;
+using Wajbah_API;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +23,9 @@ builder.Services.AddTransient<IConversationService, ConversationService>();
 //builder.Services.AddSingleton<MongoDBService>();
 //resolving the IMessageService dependency
 builder.Services.AddTransient<IMessageService, MessageService>();
+
+builder.Services.AddScoped<IMenuItemRepository, MenuItemRepository>();
+builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

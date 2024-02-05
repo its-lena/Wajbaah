@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wajbah_API.Data;
 
@@ -11,9 +12,11 @@ using Wajbah_API.Data;
 namespace Wajbah_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240205120946_updateSizePrice")]
+    partial class updateSizePrice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -518,7 +521,7 @@ namespace Wajbah_API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Wajbah_API.Models.SizesPrice", "SizesPrices", b1 =>
+                    b.OwnsOne("Wajbah_API.Models.SizePrice", "SizePrices", b1 =>
                         {
                             b1.Property<int>("MenuItemId")
                                 .HasColumnType("int");
@@ -535,6 +538,21 @@ namespace Wajbah_API.Migrations
                                 .HasColumnType("decimal(18,2)")
                                 .HasColumnName("PriceSmall");
 
+                            b1.Property<string>("SizeLarge")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("SizeLarge");
+
+                            b1.Property<string>("SizeMedium")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("SizeMedium");
+
+                            b1.Property<string>("SizeSmall")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("sizeSmall");
+
                             b1.HasKey("MenuItemId");
 
                             b1.ToTable("MenuItems");
@@ -545,7 +563,7 @@ namespace Wajbah_API.Migrations
 
                     b.Navigation("Chef");
 
-                    b.Navigation("SizesPrices")
+                    b.Navigation("SizePrices")
                         .IsRequired();
                 });
 

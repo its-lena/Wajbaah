@@ -60,10 +60,14 @@ namespace Wajbah_API.Data
 				});
 
 			modelBuilder.Entity<MenuItem>()
-				.OwnsMany(m => m.SizePrices, s =>
+				.OwnsOne(m => m.SizesPrices, s =>
 				{
-					s.Property(s => s.Price).HasColumnName("Price");
-					s.Property(s => s.Size).HasColumnName("size");
+					s.Property(s => s.PriceSmall).HasColumnName("PriceSmall");
+					//s.Property(s => s.SizeSmall).HasColumnName("sizeSmall");
+					s.Property(s => s.PriceMedium).HasColumnName("PriceMedium");
+					//s.Property(s => s.SizeMedium).HasColumnName("SizeMedium");
+					s.Property(s => s.PriceLarge).HasColumnName("PriceLarge");
+					//s.Property(s => s.SizeLarge).HasColumnName("SizeLarge");
 					//s.HasKey(s => new { s.Size });
 				});
 

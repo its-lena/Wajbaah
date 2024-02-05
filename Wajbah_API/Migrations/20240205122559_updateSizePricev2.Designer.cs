@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wajbah_API.Data;
 
@@ -11,9 +12,11 @@ using Wajbah_API.Data;
 namespace Wajbah_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240205122559_updateSizePricev2")]
+    partial class updateSizePricev2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -534,6 +537,21 @@ namespace Wajbah_API.Migrations
                             b1.Property<decimal>("PriceSmall")
                                 .HasColumnType("decimal(18,2)")
                                 .HasColumnName("PriceSmall");
+
+                            b1.Property<string>("SizeLarge")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("SizeLarge");
+
+                            b1.Property<string>("SizeMedium")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("SizeMedium");
+
+                            b1.Property<string>("SizeSmall")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("sizeSmall");
 
                             b1.HasKey("MenuItemId");
 

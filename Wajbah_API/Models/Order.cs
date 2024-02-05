@@ -9,7 +9,7 @@ namespace Wajbah_API.Models
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int OrderId { get; set; }
 		public string Notes { get; set; }
-		/*[Required]
+		[Required]
 		public decimal TotalPrice
 		{
 			get { return OrderMenuItems.Sum(order => order.TotalItem) + OrderExtraMenuItems.Sum(e => e.TotalItem) + DeliveryFees; }
@@ -18,7 +18,7 @@ namespace Wajbah_API.Models
         public decimal SubTotal { 
 			get { return OrderMenuItems.Sum(order => order.TotalItem) + OrderExtraMenuItems.Sum(e => e.TotalItem) ; } 
 		}
-		*/
+		
 		[Required]
 		public decimal DeliveryFees { get; set; }
 		[Required]

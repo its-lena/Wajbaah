@@ -6,7 +6,7 @@ namespace Wajbah_API.Models
 	public class MenuItem
 	{
 		[Key]
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		//[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int MenuItemId { get; set; }
 		[Required, MaxLength(50)]
 		public string Name { get; set; }
@@ -31,6 +31,6 @@ namespace Wajbah_API.Models
 
 		//MenuItem-SizePrice relation (many to one)
 		[Required]
-        public List<SizePrice> SizePrices { get; set; }
+        public SizesPrice SizesPrices { get; set; }
     }
 }

@@ -15,7 +15,17 @@ namespace Wajbah_API.Models
 		[NotMapped]
 		public decimal TotalItem
 		{
-			get { return Quantity * MenuItem.SizePrices.FirstOrDefault(e => e.Size == Size).Price; }
+			get {
+				if (Size.ToLower() == "small")
+				{
+					return Quantity * MenuItem.SizesPrices.PriceSmall;
+				}
+				else if(Size.ToLower() == "medium")
+				{
+					return Quantity * MenuItem.SizesPrices.PriceMedium;
+				}
+				return Quantity * MenuItem.SizesPrices.PriceLarge;
+			}
 		}
 	}
 }

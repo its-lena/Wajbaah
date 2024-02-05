@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wajbah_API.Data;
 
@@ -11,9 +12,11 @@ using Wajbah_API.Data;
 namespace Wajbah_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240205113639_seedCheftablev2")]
+    partial class seedCheftablev2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -518,26 +521,29 @@ namespace Wajbah_API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Wajbah_API.Models.SizesPrice", "SizesPrices", b1 =>
+                    b.OwnsMany("Wajbah_API.Models.SizePrice", "SizePrices", b1 =>
                         {
                             b1.Property<int>("MenuItemId")
                                 .HasColumnType("int");
 
-                            b1.Property<decimal>("PriceLarge")
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<decimal>("Price")
                                 .HasColumnType("decimal(18,2)")
-                                .HasColumnName("PriceLarge");
+                                .HasColumnName("Price");
 
-                            b1.Property<decimal>("PriceMedium")
-                                .HasColumnType("decimal(18,2)")
-                                .HasColumnName("PriceMedium");
+                            b1.Property<string>("Size")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("size");
 
-                            b1.Property<decimal>("PriceSmall")
-                                .HasColumnType("decimal(18,2)")
-                                .HasColumnName("PriceSmall");
+                            b1.HasKey("MenuItemId", "Id");
 
-                            b1.HasKey("MenuItemId");
-
-                            b1.ToTable("MenuItems");
+                            b1.ToTable("SizePrice");
 
                             b1.WithOwner()
                                 .HasForeignKey("MenuItemId");
@@ -545,8 +551,7 @@ namespace Wajbah_API.Migrations
 
                     b.Navigation("Chef");
 
-                    b.Navigation("SizesPrices")
-                        .IsRequired();
+                    b.Navigation("SizePrices");
                 });
 
             modelBuilder.Entity("Wajbah_API.Models.Order", b =>
