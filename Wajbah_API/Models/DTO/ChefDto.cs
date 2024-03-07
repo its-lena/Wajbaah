@@ -5,7 +5,7 @@ namespace Wajbah_API.Models.DTO
 {
     public class ChefDto
     {
-        public int NationalId { get; set; }
+        public int ChefId { get; set; }
         [Required]
         public int PhoneNumber { get; set; }
         [Required]
@@ -31,4 +31,4 @@ namespace Wajbah_API.Models.DTO
         public ICollection<PromoCode> PromoCodes { get; set; }
     }
 }
-}
+
