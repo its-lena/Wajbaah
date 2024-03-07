@@ -15,6 +15,10 @@ namespace Wajbah_API
             CreateMap<Chef, ChefDto>().ReverseMap();
             CreateMap<Chef, ChefCreateDto>().ReverseMap();
             CreateMap<Chef, ChefUpdateDto>().ReverseMap();
+            
+            CreateMap<Customer, CustomerDto>().ReverseMap();
+            CreateMap<Customer, CustomerCreateDto>().ReverseMap();
+            CreateMap<Customer, CustomerUpdateDto>().ReverseMap();
 
             CreateMap<Order, OrderDTO>().ReverseMap();
             CreateMap<Order, OrderCreateDTO>().ReverseMap();
