@@ -25,6 +25,7 @@ builder.Services.AddTransient<IConversationService, ConversationService>();
 builder.Services.AddTransient<IMessageService, MessageService>();
 
 builder.Services.AddScoped<IMenuItemRepository, MenuItemRepository>();
+builder.Services.AddScoped<IExtraMenuItemRepository, ExtraMenuItemRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IChefRepository, ChefRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
