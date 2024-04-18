@@ -20,7 +20,7 @@ namespace Wajbah_API.Models
 		[Required]
 		public DateTime BirthDate { get; set; }
 		public decimal Wallet { get; set; }
-		public string UsedCoupones { get; set; }
+		public string? UsedCoupones { get; set; }
         //Customer-Order relation (many to one)
         public List<Order> Orders { get; set; }
     }

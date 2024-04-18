@@ -20,7 +20,10 @@ builder.Services.AddTransient<IChatRepository, ChatRepository>();
 builder.Services.AddScoped<IPromoCodeRepository, PromoCodeRepository>();
 
 builder.Services.AddScoped<IMenuItemRepository, MenuItemRepository>();
+builder.Services.AddScoped<IExtraMenuItemRepository, ExtraMenuItemRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IChefRepository, ChefRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 builder.Services.AddControllers();
