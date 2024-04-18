@@ -1,10 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Wajbah_API.Data;
-using Wajbah_API.Models;
 using Wajbah_API.Repository.IRepository;
 using Wajbah_API.Repository;
-using Wajbah_API.Services;
 using Wajbah_API;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,11 +16,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection("MongoDB"));
 
-//resolving the categoryService dependency
-builder.Services.AddTransient<IConversationService, ConversationService>();
-//builder.Services.AddSingleton<MongoDBService>();
-//resolving the IMessageService dependency
-builder.Services.AddTransient<IMessageService, MessageService>();
+builder.Services.AddTransient<IChatRepository, ChatRepository>();
+builder.Services.AddScoped<IPromoCodeRepository, PromoCodeRepository>();
 
 builder.Services.AddScoped<IMenuItemRepository, MenuItemRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();

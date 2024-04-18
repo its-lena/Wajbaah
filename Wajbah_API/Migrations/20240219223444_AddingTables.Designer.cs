@@ -12,8 +12,8 @@ using Wajbah_API.Data;
 namespace Wajbah_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240205111753_relations")]
-    partial class relations
+    [Migration("20240219223444_AddingTables")]
+    partial class AddingTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,6 +80,23 @@ namespace Wajbah_API.Migrations
                         .IsUnique();
 
                     b.ToTable("Chefs");
+
+                    b.HasData(
+                        new
+                        {
+                            ChefId = "30202929472263",
+                            BirthDate = new DateTime(2002, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ChefFirstName = "lina",
+                            ChefLastName = "gamal",
+                            Description = "Description",
+                            Email = "lina@gmail",
+                            Password = "Password",
+                            PhoneNumber = 1148001373,
+                            ProfilePicture = "photo",
+                            Rating = 5.5m,
+                            RestaurantName = "lolla",
+                            Wallet = 0m
+                        });
                 });
 
             modelBuilder.Entity("Wajbah_API.Models.ChefPromoCode", b =>
@@ -504,29 +521,26 @@ namespace Wajbah_API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsMany("Wajbah_API.Models.SizePrice", "SizePrices", b1 =>
+                    b.OwnsOne("Wajbah_API.Models.SizesPrice", "SizesPrices", b1 =>
                         {
                             b1.Property<int>("MenuItemId")
                                 .HasColumnType("int");
 
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
-
-                            b1.Property<decimal>("Price")
+                            b1.Property<decimal>("PriceLarge")
                                 .HasColumnType("decimal(18,2)")
-                                .HasColumnName("Price");
+                                .HasColumnName("PriceLarge");
 
-                            b1.Property<string>("Size")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)")
-                                .HasColumnName("size");
+                            b1.Property<decimal>("PriceMedium")
+                                .HasColumnType("decimal(18,2)")
+                                .HasColumnName("PriceMedium");
 
-                            b1.HasKey("MenuItemId", "Id");
+                            b1.Property<decimal>("PriceSmall")
+                                .HasColumnType("decimal(18,2)")
+                                .HasColumnName("PriceSmall");
 
-                            b1.ToTable("SizePrice");
+                            b1.HasKey("MenuItemId");
+
+                            b1.ToTable("MenuItems");
 
                             b1.WithOwner()
                                 .HasForeignKey("MenuItemId");
@@ -534,7 +548,8 @@ namespace Wajbah_API.Migrations
 
                     b.Navigation("Chef");
 
-                    b.Navigation("SizePrices");
+                    b.Navigation("SizesPrices")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Wajbah_API.Models.Order", b =>
