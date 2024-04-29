@@ -5,7 +5,7 @@ namespace Wajbah_API.Models.DTO
 {
     public class ChefDto
     {
-        public int ChefId { get; set; }
+        public string ChefId { get; set; }
         [Required]
         public int PhoneNumber { get; set; }
         [Required]
