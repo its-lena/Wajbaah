@@ -37,7 +37,6 @@ namespace Wajbah_API.Controllers
                 }
 
                 _response.StatusCode = HttpStatusCode.OK;
-                ChefDto chefGetAsync = _mapper.Map<ChefDto>(model);
                 return _response;
 
 
