@@ -20,6 +20,37 @@ namespace Wajbah_API.Controllers
             _dbChef = dbChef;
             this._response = new APIResponse();
         }
+        [HttpGet(Name = "GetAllChefs")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<APIResponse>> GetAllChefs()
+        {
+            try
+            {
+
+                IEnumerable<Chef> model = await _dbChef.GetAllAsync();
+                _response.Result = _mapper.Map<List<ChefDto>>(model);
+                if (model == null)
+                {
+                    return NotFound();
+                }
+
+                _response.StatusCode = HttpStatusCode.OK;
+                ChefDto chefGetAsync = _mapper.Map<ChefDto>(model);
+                return _response;
+
+
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string>() { ex.ToString() };
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                return _response;
+            }
+        }
+
 
         [HttpPost(Name = "CreateChef")]
         [ProducesResponseType(StatusCodes.Status201Created)]
