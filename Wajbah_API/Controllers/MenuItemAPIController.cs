@@ -13,6 +13,7 @@ namespace Wajbah_API.Controllers
     public class MenuItemAPIController : ControllerBase
     {
         private readonly IMenuItemRepository _dbItem;
+	private readonly IChefRepository _dbChef;
         private readonly IMapper _mapper;
         protected APIResponse _response;
         //هشيلها قدام
@@ -68,7 +69,11 @@ namespace Wajbah_API.Controllers
                     return NotFound(_response);
                 }
 
-                _response.Result = _mapper.Map<Menu_ItemDTO>(MenuItem);
+                Chef chef = await _dbChef.GetAsync(c => c.ChefId == MenuItem.ChefId);
+                var model= _mapper.Map<Menu_ItemDTO>(MenuItem);
+                model.RestaurantName=chef.RestaurantName;
+                model.ProfilePicture=chef.ProfilePicture;
+                _response.Result=model;
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
             }
