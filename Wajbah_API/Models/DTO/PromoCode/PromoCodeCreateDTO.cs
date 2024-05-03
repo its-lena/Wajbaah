@@ -21,5 +21,6 @@ namespace Wajbah_API.Models.DTO.PromoCode
         public int MinLimit { get; set; }
         public ICollection<string> ChefIds { get; set; }
 
+
     }
 }
