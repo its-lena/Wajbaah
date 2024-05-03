@@ -17,10 +17,12 @@ namespace Wajbah_API.Models
 		public string FirstName { get; set; }
 		[Required, MaxLength(25)]
 		public string LastName { get; set; }
-		[Required]
+        public string Role { get; set; }
+        [Required]
 		public DateTime BirthDate { get; set; }
 		public decimal Wallet { get; set; }
-		public string? UsedCoupones { get; set; }
+        public string? Favourites { get; set; }
+        public string? UsedCoupones { get; set; }
         //Customer-Order relation (many to one)
         public List<Order> Orders { get; set; }
     }

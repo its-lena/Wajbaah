@@ -19,18 +19,25 @@ namespace Wajbah_API.Repository
             await SaveAsync();
         }
 
-        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null)
+        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, params Expression<Func<T, object>>[] includeProperties)
         {
             IQueryable<T> query = dbSet;
             if(filter != null)
             {
                 query = query.Where(filter);
             }
+			if (includeProperties != null)
+			{
+				foreach (var includeProperty in includeProperties)
+				{
+					query = query.Include(includeProperty);
+				}
+			}
 
-            return await query.ToListAsync();
+			return await query.ToListAsync();
         }
 
-        public async Task<T> GetAsync(Expression<Func<T, bool>> filter = null, bool tracking = true)
+        public async Task<T> GetAsync(Expression<Func<T, bool>> filter = null, bool tracking = true, params Expression<Func<T, object>>[] includeProperties)
         {
             IQueryable<T> query = dbSet;
             if (!tracking)
@@ -41,8 +48,12 @@ namespace Wajbah_API.Repository
             {
                 query = query.Where(filter);
             }
+			if (includeProperties != null)
+			{
+				query = includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+			}
 
-            return await query.FirstOrDefaultAsync();
+			return await query.FirstOrDefaultAsync();
         }
 
         public async Task RemoveAsync(T entity)

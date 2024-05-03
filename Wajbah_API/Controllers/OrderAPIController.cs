@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Wajbah_API.Data;
@@ -26,7 +27,9 @@ namespace Wajbah_API.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+		//[Authorize(Roles = "admin")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+
         public async Task<ActionResult<APIResponse>> GetOrders()
         {
             try
@@ -49,7 +52,8 @@ namespace Wajbah_API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<APIResponse>> GETOrder(int id)
+		//[Authorize]
+		public async Task<ActionResult<APIResponse>> GETOrder(int id)
         {
             try
             {
@@ -80,7 +84,8 @@ namespace Wajbah_API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+		//[Authorize]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<APIResponse>> CreateOrder([FromBody] OrderCreateDTO orderCreate)

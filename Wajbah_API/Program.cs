@@ -18,13 +18,34 @@ builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection("Mo
 
 builder.Services.AddTransient<IChatRepository, ChatRepository>();
 builder.Services.AddScoped<IPromoCodeRepository, PromoCodeRepository>();
-
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserChefRepository, UserChefRepository>();
 builder.Services.AddScoped<IMenuItemRepository, MenuItemRepository>();
 builder.Services.AddScoped<IExtraMenuItemRepository, ExtraMenuItemRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IChefRepository, ChefRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddAutoMapper(typeof(MapperConfig));
+
+//Authentication
+//var key = builder.Configuration.GetValue<string>("ApiSettings:Secret");
+//builder.Services.AddAuthentication(x =>
+//{
+//	x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//	x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//})
+//	.AddJwtBearer(x => {
+//		x.RequireHttpsMetadata = false;
+//		x.SaveToken = true;
+//		x.TokenValidationParameters = new TokenValidationParameters
+//		{
+//			ValidateIssuerSigningKey = true,
+//			IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
+//			ValidateIssuer = false,
+//			ValidateAudience = false
+//		};
+//	});
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -41,7 +62,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

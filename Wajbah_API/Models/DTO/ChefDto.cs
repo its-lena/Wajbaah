@@ -5,7 +5,7 @@ namespace Wajbah_API.Models.DTO
 {
     public class ChefDto
     {
-        public int ChefId { get; set; }
+        public string ChefId { get; set; }
         [Required]
         public int PhoneNumber { get; set; }
         [Required]
@@ -26,9 +26,9 @@ namespace Wajbah_API.Models.DTO
         public string ProfilePicture { get; set; }
         [Required]
         public Address Address { get; set; }
-        public List<ExtraMenuItem> ExtraMenuItems { get; set; }
-        public List<MenuItem> MenuItems { get; set; }
-        public ICollection<PromoCode> PromoCodes { get; set; }
+        //public List<ExtraMenuItem> ExtraMenuItems { get; set; }
+        public List<Menu_ItemDTO> MenuItems { get; set; }
+        public ICollection<ChefPromoCode> PromoCodes { get; set; }
     }
 }
 

@@ -15,7 +15,8 @@ namespace Wajbah_API.Models
 		public int PhoneNumber { get; set; }
 		[Required]
 		public string Email { get; set; }
-		[Required, MinLength(8)]
+        public string Role { get; set; }
+        [Required, MinLength(8)]
 		public string Password { get; set; }
 		[Required, MaxLength(25)]
 		public string ChefFirstName { get; set; }

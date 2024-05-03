@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 using System.Net;
 using Wajbah_API.Data;
 using Wajbah_API.Models;
@@ -15,17 +17,19 @@ namespace Wajbah_API.Controllers
     public class PromoCodesController : ControllerBase
     {
         private readonly IPromoCodeRepository _dbItem;
+        private readonly IChefRepository _dbChef;
         private readonly IMapper _mapper;
         protected APIResponse _response;
         private readonly ApplicationDbContext _db;
 
 
-        public PromoCodesController(IPromoCodeRepository dbItem, IMapper mapper, ApplicationDbContext db)
+        public PromoCodesController(IPromoCodeRepository dbItem, IMapper mapper, ApplicationDbContext db, IChefRepository dbChef)
         {
             _dbItem = dbItem;
             _mapper = mapper;
             this._response = new();
             _db = db;
+            _dbChef = dbChef;
         }
 
         [HttpGet]
@@ -48,7 +52,47 @@ namespace Wajbah_API.Controllers
             return _response;
         }
 
-        [HttpPost]
+		[HttpGet("{id}", Name = "GetPromocode")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<ActionResult<APIResponse>> GetPromoCode(int id)
+		{
+			try
+			{
+				PromoCode model = await _dbItem.GetAsync(i => i.PromoCodeId == id);
+
+				if (model == null)
+				{
+					ModelState.AddModelError("ExstingError", "There is no promocode with this ID");
+					return NotFound(ModelState);
+				}
+
+				_response.StatusCode = HttpStatusCode.OK;
+				PromoCodeDTO promocode = _mapper.Map<PromoCodeDTO>(model);
+
+				//if (model.Chefs != null)
+				//{
+				//	promocode.ChefIds = model.Chefs.Select(c => c.ChefId).ToList();
+				//}
+				//else
+				//{
+				//	promocode.ChefIds = new List<string>(); // or null, depending on your preference
+				//}
+				_response.Result = promocode;
+				return _response;
+
+			}
+			catch (Exception ex)
+			{
+				_response.IsSuccess = false;
+				_response.ErrorMessages = new List<string>() { ex.ToString() };
+				_response.StatusCode = HttpStatusCode.BadRequest;
+				return _response;
+			}
+		}
+
+		[HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -67,19 +111,38 @@ namespace Wajbah_API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                if (promoCodeCreate == null)
-                {
-                    _response.IsSuccess = false;
-                    _response.StatusCode = HttpStatusCode.BadRequest;
-                    return BadRequest(_response);
-                }
+                //if (promoCodeCreate == null)
+                //{
+                //    _response.IsSuccess = false;
+                //    _response.StatusCode = HttpStatusCode.BadRequest;
+                //    return BadRequest(_response);
+                //}
 
-                PromoCode promoCode = _mapper.Map<PromoCode>(promoCodeCreate);
+                PromoCode promoCode = new PromoCode
+                {
+                    Name = promoCodeCreate.Name,
+                    StartDate= promoCodeCreate.StartDate,
+                    ExpireDate= promoCodeCreate.ExpireDate,
+                    DiscountPercentage= promoCodeCreate.DiscountPercentage,
+                    MaxUsers= promoCodeCreate.MaxUsers,
+                    MinLimit= promoCodeCreate.MinLimit,
+                    MaxLimit= promoCodeCreate.MaxLimit
+                };
+
+				ICollection<Chef> chefs = await _dbChef.GetAllAsync(c => promoCodeCreate.ChefIds.Contains(c.ChefId));
+
+                if(chefs.Count != promoCodeCreate.ChefIds.Count)
+                {
+					ModelState.AddModelError("Custom-Error", "Invalid chef(s) ID");
+					return BadRequest(ModelState);
+				}
+
+                promoCode.Chefs = chefs.ToList();
                 await _dbItem.CreateAsync(promoCode);
 
-                _response.Result = _mapper.Map<PromoCodeDTO>(promoCodeCreate);
+				_response.Result = _mapper.Map<PromoCodeDTO>(promoCode);
                 _response.StatusCode = HttpStatusCode.Created;
-                return CreatedAtRoute("", new { id = promoCode.PromoCodeId }, _response);
+                return CreatedAtRoute("GetPromocode", new { id = promoCode.PromoCodeId }, _response);
             }
             catch (Exception ex)
             {

@@ -22,5 +22,7 @@ namespace Wajbah_API.Models.DTO.PromoCode
         public int MaxLimit { get; set; }
         [Required]
         public int MinLimit { get; set; }
-    }
+		//public List<string> ChefIds { get; set; }
+
+	}
 }

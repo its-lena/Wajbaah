@@ -18,9 +18,11 @@ namespace Wajbah_API.Models.DTO
         [Required, MaxLength(25)]
         public string LastName { get; set; }
         [Required]
+        public string? Favourites { get; set; }
+        [Required]
         public DateTime BirthDate { get; set; }
         public decimal Wallet { get; set; }
-        public string UsedCoupones { get; set; }
+        //public string UsedCoupones { get; set; }
         //Customer-Order relation (many to one)
         public List<Order> Orders { get; set; }
     }

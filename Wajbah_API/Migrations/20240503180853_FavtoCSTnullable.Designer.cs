@@ -12,8 +12,8 @@ using Wajbah_API.Data;
 namespace Wajbah_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240307214413_usedcouponsNullable")]
-    partial class usedcouponsNullable
+    [Migration("20240503180853_FavtoCSTnullable")]
+    partial class FavtoCSTnullable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,6 +70,9 @@ namespace Wajbah_API.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Wallet")
                         .HasColumnType("decimal(18,2)");
@@ -172,8 +175,10 @@ namespace Wajbah_API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Favourites")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -192,6 +197,9 @@ namespace Wajbah_API.Migrations
                     b.Property<int>("PhoneNumber")
                         .HasColumnType("int");
 
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UsedCoupones")
                         .HasColumnType("nvarchar(max)");
 
@@ -201,7 +209,8 @@ namespace Wajbah_API.Migrations
                     b.HasKey("CustomerId");
 
                     b.HasIndex("Email", "PhoneNumber")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
 
                     b.ToTable("Customers");
                 });
@@ -215,7 +224,6 @@ namespace Wajbah_API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExtraMenuItemId"));
 
                     b.Property<string>("ChefId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(14)");
 
                     b.Property<DateTime>("CreatedOn")
@@ -254,7 +262,6 @@ namespace Wajbah_API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ChefId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(14)");
 
                     b.Property<DateTime>("CreatedOn")
@@ -267,7 +274,6 @@ namespace Wajbah_API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EstimatedTime")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("HealthyMode")
@@ -279,11 +285,9 @@ namespace Wajbah_API.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Occassions")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OrderingTime")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Photo")
@@ -317,7 +321,6 @@ namespace Wajbah_API.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Copoun")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedOn")
@@ -338,18 +341,15 @@ namespace Wajbah_API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EstimatedTime")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Notes")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PromoCodeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("OrderId");
@@ -391,7 +391,6 @@ namespace Wajbah_API.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Size")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("OrderId", "MenuItemId");
@@ -505,9 +504,7 @@ namespace Wajbah_API.Migrations
                 {
                     b.HasOne("Wajbah_API.Models.Chef", "Chef")
                         .WithMany("ExtraMenuItems")
-                        .HasForeignKey("ChefId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ChefId");
 
                     b.Navigation("Chef");
                 });
@@ -516,9 +513,7 @@ namespace Wajbah_API.Migrations
                 {
                     b.HasOne("Wajbah_API.Models.Chef", "Chef")
                         .WithMany("MenuItems")
-                        .HasForeignKey("ChefId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ChefId");
 
                     b.OwnsOne("Wajbah_API.Models.SizesPrice", "SizesPrices", b1 =>
                         {

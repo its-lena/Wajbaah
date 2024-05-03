@@ -12,7 +12,9 @@ namespace Wajbah_API.Models.DTO
         public string FirstName { get; set; }
         [Required, MaxLength(25)]
         public string LastName { get; set; }
-        [Required]
+		[Required]
+		public string? Favourites { get; set; }
+		[Required]
         public DateTime BirthDate { get; set; }
     }
 }

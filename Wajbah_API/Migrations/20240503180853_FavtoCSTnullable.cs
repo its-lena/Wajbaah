@@ -5,13 +5,13 @@
 namespace Wajbah_API.Migrations
 {
     /// <inheritdoc />
-    public partial class usedcouponsNullable : Migration
+    public partial class FavtoCSTnullable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "UsedCoupones",
+                name: "Favourites",
                 table: "Customers",
                 type: "nvarchar(max)",
                 nullable: true,
@@ -23,7 +23,7 @@ namespace Wajbah_API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "UsedCoupones",
+                name: "Favourites",
                 table: "Customers",
                 type: "nvarchar(max)",
                 nullable: false,

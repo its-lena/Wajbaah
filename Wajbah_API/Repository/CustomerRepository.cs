@@ -1,9 +1,10 @@
 ﻿using Wajbah_API.Data;
 using Wajbah_API.Models;
+using Wajbah_API.Repository.IRepository;
 
-namespace Wajbah_API.Repository.IRepository
+namespace Wajbah_API.Repository
 {
-    public class CustomerRepository:Repository<Customer>, ICustomerRepository
+    public class CustomerRepository : Repository<Customer>, ICustomerRepository
     {
 
         private readonly ApplicationDbContext _db;

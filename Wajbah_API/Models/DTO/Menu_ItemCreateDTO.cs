@@ -23,7 +23,8 @@ namespace Wajbah_API.Models.DTO
         [Required]
         //byte[] ?
         public string Photo { get; set; }
-        [Required]
+		//public string RestaurantPhoto { get; set; }
+		[Required]
         public string ChefId { get; set; }
 
     }

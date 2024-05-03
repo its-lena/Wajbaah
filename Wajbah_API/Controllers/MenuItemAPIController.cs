@@ -13,16 +13,18 @@ namespace Wajbah_API.Controllers
     public class MenuItemAPIController : ControllerBase
     {
         private readonly IMenuItemRepository _dbItem;
+        private readonly IChefRepository _dbChef;
         private readonly IMapper _mapper;
         protected APIResponse _response;
-        //هشيلها قدام
+        //will be replaced
         private readonly ApplicationDbContext _db;
 
-        public MenuItemAPIController(IMenuItemRepository dbItem, IMapper mapper, ApplicationDbContext db)
+        public MenuItemAPIController(IMenuItemRepository dbItem, IMapper mapper, ApplicationDbContext db, IChefRepository dbChef)
         {
             _dbItem = dbItem;
             _mapper = mapper;
             this._response = new();
+            _dbChef = dbChef;
             _db = db;
         }
 
@@ -32,9 +34,27 @@ namespace Wajbah_API.Controllers
         {
             try
             {
-                IEnumerable<MenuItem> MenuItemList = await _dbItem.GetAllAsync();
-                _response.Result = _mapper.Map<List<Menu_ItemDTO>>(MenuItemList);
-                _response.StatusCode = HttpStatusCode.OK;
+                IEnumerable<MenuItem> MenuItemList = await _dbItem.GetAllAsync(includeProperties: x => x.Chef);
+
+				var menuDtoList = MenuItemList.Select(menuItem => new Menu_ItemDTO
+				{
+					// Map properties from MenuItem to Menu_ItemDTO
+					MenuItemId = menuItem.MenuItemId,
+					Name = menuItem.Name,
+					RestaurantName = menuItem.Chef?.RestaurantName,
+                    EstimatedTime = menuItem.EstimatedTime,
+                    OrderingTime = menuItem.OrderingTime,
+                    Category = menuItem.Category,
+                    Occassions = menuItem.Occassions,
+                    SizesPrices = menuItem.SizesPrices,
+                    HealthyMode = menuItem.HealthyMode,
+                    Description = menuItem.Description,
+                    Photo = menuItem.Photo,
+                    RestaurantPhoto = menuItem.Chef?.ProfilePicture
+				}).ToList();
+
+                _response.Result = menuDtoList;
+				_response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
             }
             catch (Exception ex)
@@ -60,7 +80,7 @@ namespace Wajbah_API.Controllers
                     _response.IsSuccess = false;
                     return BadRequest(_response);
                 }
-                var MenuItem = _dbItem.GetAsync(u => u.MenuItemId == id);
+                var MenuItem = await _dbItem.GetAsync(u => u.MenuItemId == id, includeProperties: x => x.Chef);
                 if (MenuItem == null)
                 {
                     _response.IsSuccess = false;
@@ -68,8 +88,14 @@ namespace Wajbah_API.Controllers
                     return NotFound(_response);
                 }
 
-                _response.Result = _mapper.Map<Menu_ItemDTO>(MenuItem);
-                _response.StatusCode = HttpStatusCode.OK;
+
+                Menu_ItemDTO menuItemDto = _mapper.Map<Menu_ItemDTO>(MenuItem);
+                menuItemDto.RestaurantName = MenuItem.Chef.RestaurantName;
+                menuItemDto.RestaurantPhoto = MenuItem.Chef.ProfilePicture;
+
+                _response.Result = menuItemDto;
+
+				_response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
             }
             catch (Exception ex)
