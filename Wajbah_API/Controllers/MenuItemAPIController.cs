@@ -18,14 +18,16 @@ namespace Wajbah_API.Controllers
         protected APIResponse _response;
         //will be replaced
         private readonly ApplicationDbContext _db;
+        private readonly IItemRateRepository _itemRateRepository;
 
-        public MenuItemAPIController(IMenuItemRepository dbItem, IMapper mapper, ApplicationDbContext db, IChefRepository dbChef)
+        public MenuItemAPIController(IMenuItemRepository dbItem, IMapper mapper, ApplicationDbContext db, IChefRepository dbChef, IItemRateRepository itemRateRepository)
         {
             _dbItem = dbItem;
             _mapper = mapper;
             this._response = new();
             _dbChef = dbChef;
             _db = db;
+            _itemRateRepository = itemRateRepository;
         }
 
         [HttpGet]
@@ -223,21 +225,21 @@ namespace Wajbah_API.Controllers
             return _response;
         }
 
-        [HttpPost("{id:int},{newRate:double}", Name = "UpdateItemRate")]
+        [HttpPost("UpdateItemRate", Name = "UpdateItemRate")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<APIResponse>> UpdateItemRate(int id, double newRate)
+        public async Task<ActionResult<APIResponse>> UpdateItemRate([FromBody] ItemRateRecordDto dto)
         {
             try
             {
-                if (id == 0)
+                if (dto.MenuItemId == 0 || dto.CustomerId==0)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     _response.IsSuccess = false;
                     return BadRequest(_response);
                 }
-                var MenuItem = await _dbItem.GetAsync(u => u.MenuItemId == id, includeProperties: x => x.Chef);
+                var MenuItem = await _dbItem.GetAsync(u => u.MenuItemId == dto.MenuItemId, includeProperties: x => x.Chef);
                 if (MenuItem == null)
                 {
                     _response.IsSuccess = false;
@@ -246,10 +248,28 @@ namespace Wajbah_API.Controllers
                 }
 
 
-                MenuItem.Rate = _dbItem.UpdateRate(newRate, MenuItem.Rate);
+                MenuItem.Rate = _dbItem.UpdateRate(dto.Rating, MenuItem.Rate);
                 await _dbItem.UpdateAsync(MenuItem);
-                _response.Result = true;
+                _response.Result =await _itemRateRepository.SetRate(dto);
+                _response.StatusCode = HttpStatusCode.OK;
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages =
+                    new List<string>() { ex.Message };
+            }
+            return _response;
+        }
 
+        [HttpGet("GetAllRatings",Name = "GetAllRatings")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<APIResponse>> GetAllRatings()
+        {
+            try
+            {
+                _response.Result = await _itemRateRepository.GetAllRates();
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
             }

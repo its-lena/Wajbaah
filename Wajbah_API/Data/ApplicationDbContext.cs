@@ -15,8 +15,10 @@ namespace Wajbah_API.Data
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+            modelBuilder.Entity<ItemRateRecord>()
+				.HasKey(c => new { c.CustomerId, c.MenuItemId });
 
-			modelBuilder.Entity<Customer>()
+            modelBuilder.Entity<Customer>()
 				.HasIndex(c => new { c.Email, c.PhoneNumber })
 				.IsUnique();
 
@@ -245,6 +247,7 @@ namespace Wajbah_API.Data
 		public DbSet<MenuItem> MenuItems { get; set; }
 		public DbSet<Order> Orders { get; set; }
 		public DbSet<PromoCode> PromoCodes { get; set; }
+        public DbSet<ItemRateRecord> ItemRateRecords { get; set; }
 
-	}
+    }
 }
