@@ -49,6 +49,7 @@ namespace Wajbah_API.Controllers
                     SizesPrices = menuItem.SizesPrices,
                     HealthyMode = menuItem.HealthyMode,
                     Description = menuItem.Description,
+                    Rate= menuItem.Rate,
                     Photo = menuItem.Photo,
                     RestaurantPhoto = menuItem.Chef?.ProfilePicture
 				}).ToList();
@@ -206,7 +207,6 @@ namespace Wajbah_API.Controllers
                     _response.IsSuccess = false;
                     return BadRequest(_response);
                 }
-
                 MenuItem menuItem = _mapper.Map<MenuItem>(menuItemUpdate);
                 await _dbItem.UpdateAsync(menuItem);
 
@@ -218,6 +218,45 @@ namespace Wajbah_API.Controllers
             {
                 _response.IsSuccess = false;
                 _response.ErrorMessages=
+                    new List<string>() { ex.Message };
+            }
+            return _response;
+        }
+
+        [HttpPost("{id:int},{newRate:double}", Name = "UpdateItemRate")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<APIResponse>> UpdateItemRate(int id, double newRate)
+        {
+            try
+            {
+                if (id == 0)
+                {
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccess = false;
+                    return BadRequest(_response);
+                }
+                var MenuItem = await _dbItem.GetAsync(u => u.MenuItemId == id, includeProperties: x => x.Chef);
+                if (MenuItem == null)
+                {
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.NotFound;
+                    return NotFound(_response);
+                }
+
+
+                MenuItem.Rate = _dbItem.UpdateRate(newRate, MenuItem.Rate);
+                await _dbItem.UpdateAsync(MenuItem);
+                _response.Result = true;
+
+                _response.StatusCode = HttpStatusCode.OK;
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages =
                     new List<string>() { ex.Message };
             }
             return _response;

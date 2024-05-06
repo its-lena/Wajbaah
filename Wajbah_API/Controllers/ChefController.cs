@@ -90,7 +90,7 @@ namespace Wajbah_API.Controllers
 				List<Chef> chefs = await _dbChef.GetAllAsync();
 				if (chefs == null)
 				{
-					ModelState.AddModelError("ExstingError", "There is no Chefs yet");
+					ModelState.AddModelError("ExstingError", "There are no Chefs yet");
 					return NotFound(ModelState);
 				}
 

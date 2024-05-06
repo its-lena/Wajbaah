@@ -18,7 +18,8 @@ namespace Wajbah_API.Models
 		public bool HealthyMode { get; set; }
 		[Required]
 		public string Description { get; set; }
-		[Required]
+        public double Rate { get; set; } = 5.0;
+        [Required]
 		public string Photo { get; set; }
         public string RestaurantPhoto { get; set; }
         public DateTime CreatedOn { get; set; }
