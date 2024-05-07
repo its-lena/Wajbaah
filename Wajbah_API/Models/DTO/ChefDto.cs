@@ -26,6 +26,7 @@ namespace Wajbah_API.Models.DTO
         public string ProfilePicture { get; set; }
         [Required]
         public Address Address { get; set; }
+        public bool Active { get; set; } 
         //public List<ExtraMenuItem> ExtraMenuItems { get; set; }
         public List<Menu_ItemDTO> MenuItems { get; set; }
         public ICollection<ChefPromoCode> PromoCodes { get; set; }

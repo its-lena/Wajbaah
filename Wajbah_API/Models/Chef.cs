@@ -35,6 +35,7 @@ namespace Wajbah_API.Models
 		public string ProfilePicture { get; set; }
 		[Required]
 		public Address Address { get; set; }
+		public bool Active { get; set; }=false;
 
         //chef-ExtraMenuItem relation (many to one)
         public List<ExtraMenuItem> ExtraMenuItems { get; set; }
