@@ -29,7 +29,7 @@ namespace Wajbah_API.Models
 		[Required]
 		public string Description { get; set; }
 		//:(اعمليها انتي يا لينا
-		public decimal Rating { get; set; }
+		public double Rating { get; set; } = 5.0;
 		public decimal Wallet { get; set; }
 		[Required]
 		public string ProfilePicture { get; set; }

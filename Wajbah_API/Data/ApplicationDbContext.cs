@@ -203,7 +203,7 @@ namespace Wajbah_API.Data
 					RestaurantName = "lolla",
 					BirthDate = new DateTime(2002, 1, 1),
 					Description = "Description",
-					Rating = 5.5m,
+					Rating = 5.0,
 					Wallet = 0,
 					ProfilePicture = "photo"
 				});

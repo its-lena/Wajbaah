@@ -224,5 +224,42 @@ namespace Wajbah_API.Controllers
 				return _response;
 			}
 		}
-	}
+        [HttpPost("UpdateChefRate", Name = "UpdateChefRate")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<APIResponse>> UpdateChefRate(string id , double newRating)
+        {
+            try
+            {
+                if (newRating <= 0)
+                {
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccess = false;
+                    return BadRequest(_response);
+                }
+                var chef = await _dbChef.GetAsync(c=>c.ChefId==id);
+                if (chef == null)
+                {
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.NotFound;
+                    return NotFound(_response);
+                }
+
+
+                chef.Rating = _dbMenuItems.UpdateRate(newRating, chef.Rating); // It has the same logic for updating the Chef Rating 
+                await _dbChef.UpdateAsync(chef);
+                _response.Result =chef.Rating;
+                _response.StatusCode = HttpStatusCode.OK;
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages =
+                    new List<string>() { ex.Message };
+            }
+            return _response;
+        }
+    }
 }
