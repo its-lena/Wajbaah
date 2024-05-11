@@ -9,6 +9,7 @@ using Wajbah_API.Repository.IRepository;
 
 namespace Wajbah_API.Controllers
 {
+    [Authorize]
 	[ApiController]
 	[Route("api/OrderAPI")]
 	public class OrderAPIController : ControllerBase
@@ -16,12 +17,14 @@ namespace Wajbah_API.Controllers
         private readonly IOrderRepository _dbItem;
         private readonly IMapper _mapper;
         protected APIResponse _response;
+        protected readonly IMenuItemRepository _dbMenuItem;
         //will be replaced with needed IRepositories
         private readonly ApplicationDbContext _db;
-        public OrderAPIController(ApplicationDbContext db, IOrderRepository dbItem, IMapper mapper)
+        public OrderAPIController(ApplicationDbContext db, IOrderRepository dbItem, IMapper mapper, IMenuItemRepository dbMenuItem)
         {
             _dbItem = dbItem;
             _mapper = mapper;
+            _dbMenuItem = dbMenuItem;
             this._response = new();
             _db = db;
         }
@@ -29,8 +32,10 @@ namespace Wajbah_API.Controllers
         [HttpGet]
 		//[Authorize(Roles = "admin")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+		[ProducesResponseType(StatusCodes.Status403Forbidden)]
 
-        public async Task<ActionResult<APIResponse>> GetOrders()
+		public async Task<ActionResult<APIResponse>> GetOrders()
         {
             try
             {
@@ -52,6 +57,8 @@ namespace Wajbah_API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+		[ProducesResponseType(StatusCodes.Status403Forbidden)]
 		//[Authorize]
 		public async Task<ActionResult<APIResponse>> GETOrder(int id)
         {
@@ -88,13 +95,16 @@ namespace Wajbah_API.Controllers
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<APIResponse>> CreateOrder([FromBody] OrderCreateDTO orderCreate)
+		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+		[ProducesResponseType(StatusCodes.Status403Forbidden)]
+		public async Task<ActionResult<APIResponse>> CreateOrder([FromBody] OrderCreateDTO orderCreate)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest(ModelState);
+					ModelState.AddModelError("Custom-Error", "Something wrong with the model");
+					return BadRequest(ModelState);
                 }
                 if(orderCreate == null)
                 {
@@ -107,7 +117,11 @@ namespace Wajbah_API.Controllers
                     ModelState.AddModelError("Custom-Error", "Customer ID is not found");
                     return BadRequest(ModelState);
                 }
+                List<MenuItem> menuItems = await _dbMenuItem.GetAllAsync(m => orderCreate.MenuItemIds.Contains(m.MenuItemId));
+
                 Order order = _mapper.Map<Order>(orderCreate);
+
+                order.MenuItems = menuItems;
                 await _dbItem.CreateAsync(order);
 
                 _response.Result = _mapper.Map<OrderDTO>(order);

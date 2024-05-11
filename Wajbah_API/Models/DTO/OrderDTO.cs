@@ -31,5 +31,6 @@ namespace Wajbah_API.Models.DTO
 		public int CompanyId { get; set; }
 		[Required]
 		public int CustomerId { get; set; }
+		public ICollection<Menu_ItemDTO> MenuItems { get; set; }
 	}
 }

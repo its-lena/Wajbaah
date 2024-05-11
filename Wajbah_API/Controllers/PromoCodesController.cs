@@ -9,9 +9,11 @@ using Wajbah_API.Models;
 using Wajbah_API.Models.DTO;
 using Wajbah_API.Models.DTO.PromoCode;
 using Wajbah_API.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Wajbah_API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PromoCodesController : ControllerBase
@@ -34,7 +36,9 @@ namespace Wajbah_API.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<APIResponse>> GetPromoCodes()
+		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+		[ProducesResponseType(StatusCodes.Status403Forbidden)]
+		public async Task<ActionResult<APIResponse>> GetPromoCodes()
         {
             try
             {
@@ -56,6 +60,8 @@ namespace Wajbah_API.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+		[ProducesResponseType(StatusCodes.Status403Forbidden)]
 		public async Task<ActionResult<APIResponse>> GetPromoCode(int id)
 		{
 			try
@@ -96,7 +102,9 @@ namespace Wajbah_API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIResponse>> CreatePromoCode([FromBody] PromoCodeCreateDTO promoCodeCreate)
+		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+		[ProducesResponseType(StatusCodes.Status403Forbidden)]
+		public async Task<ActionResult<APIResponse>> CreatePromoCode([FromBody] PromoCodeCreateDTO promoCodeCreate)
         {
             try
             {
@@ -157,7 +165,9 @@ namespace Wajbah_API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<APIResponse>> UpdatePromoCode(int id, [FromBody] PromoCodeUpdateDTO promoCodeUpdate)
+		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+		[ProducesResponseType(StatusCodes.Status403Forbidden)]
+		public async Task<ActionResult<APIResponse>> UpdatePromoCode(int id, [FromBody] PromoCodeUpdateDTO promoCodeUpdate)
         {
             try
             {
@@ -189,7 +199,9 @@ namespace Wajbah_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<APIResponse>> DeletePromoCode(int id)
+		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+		[ProducesResponseType(StatusCodes.Status403Forbidden)]
+		public async Task<ActionResult<APIResponse>> DeletePromoCode(int id)
         {
             try
             {

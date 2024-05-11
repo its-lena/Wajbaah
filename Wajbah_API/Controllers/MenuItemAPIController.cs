@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Wajbah_API.Data;
@@ -8,7 +9,8 @@ using Wajbah_API.Repository.IRepository;
 
 namespace Wajbah_API.Controllers
 {
-    [ApiController]
+	[Authorize]
+	[ApiController]
     [Route("api/MenuItemAPI")]
     public class MenuItemAPIController : ControllerBase
     {
@@ -27,10 +29,12 @@ namespace Wajbah_API.Controllers
             _dbChef = dbChef;
             _db = db;
         }
-
+		
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<APIResponse>> GetMenuItems()
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+		[ProducesResponseType(StatusCodes.Status403Forbidden)]
+		public async Task<ActionResult<APIResponse>> GetMenuItems()
         {
             try
             {
@@ -70,7 +74,9 @@ namespace Wajbah_API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<APIResponse>> GetMenuItem (int id)
+		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+		[ProducesResponseType(StatusCodes.Status403Forbidden)]
+		public async Task<ActionResult<APIResponse>> GetMenuItem (int id)
         {
             try
             {
@@ -111,7 +117,9 @@ namespace Wajbah_API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIResponse>> CreateMenuItem([FromBody] Menu_ItemCreateDTO menuItemCreate)
+		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+		[ProducesResponseType(StatusCodes.Status403Forbidden)]
+		public async Task<ActionResult<APIResponse>> CreateMenuItem([FromBody] Menu_ItemCreateDTO menuItemCreate)
         {
             try
             {
@@ -160,7 +168,9 @@ namespace Wajbah_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<APIResponse>> DeleteMenuItem(int id)
+		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+		[ProducesResponseType(StatusCodes.Status403Forbidden)]
+		public async Task<ActionResult<APIResponse>> DeleteMenuItem(int id)
         {
             try
             {
@@ -196,7 +206,9 @@ namespace Wajbah_API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<APIResponse>> UpdateMenuItem (int id, [FromBody]Menu_ItemUpdateDTO menuItemUpdate)
+		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+		[ProducesResponseType(StatusCodes.Status403Forbidden)]
+		public async Task<ActionResult<APIResponse>> UpdateMenuItem (int id, [FromBody]Menu_ItemUpdateDTO menuItemUpdate)
         {
             try
             {

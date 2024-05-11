@@ -10,14 +10,9 @@ namespace Wajbah_API.Models
 		public int OrderId { get; set; }
 		public string Notes { get; set; }
 		[Required]
-		public decimal TotalPrice
-		{
-			get { return OrderMenuItems.Sum(order => order.TotalItem) + OrderExtraMenuItems.Sum(e => e.TotalItem) + DeliveryFees; }
-		}
+		public decimal TotalPrice { get; set; }
 		[Required]
-        public decimal SubTotal { 
-			get { return OrderMenuItems.Sum(order => order.TotalItem) + OrderExtraMenuItems.Sum(e => e.TotalItem) ; } 
-		}
+		public decimal SubTotal { get; set; }
 		
 		[Required]
 		public decimal DeliveryFees { get; set; }
