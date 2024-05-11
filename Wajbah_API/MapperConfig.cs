@@ -39,6 +39,8 @@ namespace Wajbah_API
 
             CreateMap<Conversation, ConversationDTO>().ReverseMap();
             CreateMap<Conversation, ConversationRequest>().ReverseMap();
+
+            CreateMap<ItemRateRecord, ItemRateRecordDto>().ReverseMap();
         }
     }
 }

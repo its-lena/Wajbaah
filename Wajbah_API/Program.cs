@@ -29,6 +29,7 @@ builder.Services.AddScoped<IExtraMenuItemRepository, ExtraMenuItemRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IChefRepository, ChefRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IItemRateRepository, ItemRateRepository>();
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 //Authentication

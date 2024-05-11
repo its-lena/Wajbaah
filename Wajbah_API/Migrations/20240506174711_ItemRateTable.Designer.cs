@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wajbah_API.Data;
 
@@ -11,9 +12,11 @@ using Wajbah_API.Data;
 namespace Wajbah_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240506174711_ItemRateTable")]
+    partial class ItemRateTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,9 +30,6 @@ namespace Wajbah_API.Migrations
                     b.Property<string>("ChefId")
                         .HasMaxLength(14)
                         .HasColumnType("nvarchar(14)");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
@@ -63,8 +63,8 @@ namespace Wajbah_API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Rating")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Rating")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("RestaurantName")
                         .IsRequired()
@@ -88,7 +88,6 @@ namespace Wajbah_API.Migrations
                         new
                         {
                             ChefId = "30202929472263",
-                            Active = false,
                             BirthDate = new DateTime(2002, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ChefFirstName = "lina",
                             ChefLastName = "gamal",
@@ -97,7 +96,7 @@ namespace Wajbah_API.Migrations
                             Password = "Password",
                             PhoneNumber = 1148001373,
                             ProfilePicture = "photo",
-                            Rating = 5.0,
+                            Rating = 5.5m,
                             RestaurantName = "lolla",
                             Wallet = 0m
                         });
@@ -378,12 +377,6 @@ namespace Wajbah_API.Migrations
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("SubTotal")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("OrderId");
 

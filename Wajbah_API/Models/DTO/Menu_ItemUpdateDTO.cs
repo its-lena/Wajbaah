@@ -20,6 +20,7 @@ namespace Wajbah_API.Models.DTO
         public bool HealthyMode { get; set; }
         [Required]
         public string Description { get; set; }
+        public double Rate { get; set; } 
         [Required]
         public string Photo { get; set; }
 		public string RestaurantPhoto { get; set; }

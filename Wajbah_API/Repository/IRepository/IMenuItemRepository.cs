@@ -5,5 +5,6 @@ namespace Wajbah_API.Repository.IRepository
     public interface IMenuItemRepository : IRepository<MenuItem>
     {
         Task<MenuItem> UpdateAsync(MenuItem entity);
+        double UpdateRate(double newRate, double oldRate);
     }
 }

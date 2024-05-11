@@ -29,12 +29,13 @@ namespace Wajbah_API.Models
 		[Required]
 		public string Description { get; set; }
 		//:(اعمليها انتي يا لينا
-		public decimal Rating { get; set; }
+		public double Rating { get; set; } = 5.0;
 		public decimal Wallet { get; set; }
 		[Required]
 		public string ProfilePicture { get; set; }
 		[Required]
 		public Address Address { get; set; }
+		public bool Active { get; set; }=false;
 
         //chef-ExtraMenuItem relation (many to one)
         public List<ExtraMenuItem> ExtraMenuItems { get; set; }

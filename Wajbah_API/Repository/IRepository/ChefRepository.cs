@@ -11,6 +11,24 @@ namespace Wajbah_API.Repository.IRepository
             _db = db;
         }
 
+        public async Task<bool> ToggleActiveAsync(string id)
+        {
+            Chef chef = await GetAsync(c => c.ChefId == id);
+            if(chef != null)
+            {
+                if(chef.Active==true)
+                {
+                    chef.Active = false;
+                }
+                else
+                {
+                    chef.Active = true;
+                }
+                await UpdateAsync(chef);
+                return true;
+            }
+            return false;
+        }
 
         public async Task<Chef> UpdateAsync(Chef entity)
         {
