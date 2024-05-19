@@ -101,16 +101,45 @@ builder.Services.AddSwaggerGen(options =>
 			new List<string>()
 		}
 	});
+	options.SwaggerDoc("v1", new OpenApiInfo
+	{
+		Version = "v1.0",
+		Title = "WajbahAPI V1",
+		Description = "API for Wajbah System",
+		TermsOfService = new Uri("https://example.com/terms"),
+		License=new OpenApiLicense
+		{
+			Name="Example License",
+			Url=new Uri("https://example.com/License")
+		}
+
+	});
 }
 );
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseSwagger();
 if (app.Environment.IsDevelopment())
 {
-	app.UseSwagger();
-	app.UseSwaggerUI();
+
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Magic_VillaV1");
+    }
+        );
+
+}
+else
+{
+    
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Magic_VillaV1");
+        options.RoutePrefix = "";
+    }
+        );
 }
 
 app.UseHttpsRedirection();

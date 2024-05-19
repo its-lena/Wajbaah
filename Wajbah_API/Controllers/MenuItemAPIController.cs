@@ -9,7 +9,7 @@ using Wajbah_API.Repository.IRepository;
 
 namespace Wajbah_API.Controllers
 {
-	[Authorize]
+	
 	[ApiController]
     [Route("api/MenuItemAPI")]
     public class MenuItemAPIController : ControllerBase
@@ -31,7 +31,8 @@ namespace Wajbah_API.Controllers
             _db = db;
             _itemRateRepository = itemRateRepository;
         }
-		
+
+        [Authorize]
         [HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -73,6 +74,7 @@ namespace Wajbah_API.Controllers
             return _response;
         }
 
+        [Authorize]
         [HttpGet("{id:int}", Name ="GetMenuItem")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -116,6 +118,7 @@ namespace Wajbah_API.Controllers
             return _response;
         }
 
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -166,6 +169,7 @@ namespace Wajbah_API.Controllers
             return _response;
         }
 
+        [Authorize]
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -205,6 +209,7 @@ namespace Wajbah_API.Controllers
             return _response;
         }
 
+        [Authorize]
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -237,6 +242,7 @@ namespace Wajbah_API.Controllers
             return _response;
         }
 
+        [Authorize]
         [HttpPost("UpdateItemRate", Name = "UpdateItemRate")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -274,7 +280,7 @@ namespace Wajbah_API.Controllers
             }
             return _response;
         }
-
+        
         [HttpGet("GetAllRatings",Name = "GetAllRatings")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<APIResponse>> GetAllRatings()
