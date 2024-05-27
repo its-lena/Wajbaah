@@ -46,6 +46,9 @@ namespace Wajbah_API.Models
         //chef-PromoCode relation (many to many)
         public ICollection<PromoCode> PromoCodes { get; set; }
         public List<ChefPromoCode> ChefPromoCodes { get; set; }
-		
+
+        //Chef-Order relation (many to one)
+        public List<Order> Orders { get; set; }
+
     }
 }

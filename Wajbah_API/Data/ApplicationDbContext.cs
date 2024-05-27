@@ -179,20 +179,26 @@ namespace Wajbah_API.Data
 					j.HasKey(t => new { t.ChefId, t.PromoCodeId });
 				});
 
-			//MenuItem-SizePrice relation (many to one)
-			//modelBuilder.Entity<MenuItem>()
-			//.HasMany(m => m.SizePrices)
-			//.WithOne();
-			//modelBuilder.Entity<SizePrice>()
-			//.HasOne(s => s.MenuItem)
-			//.WithMany(m => m.SizePrices)
-			//.HasForeignKey(s => s.MenuItemId);
+            //Chef-Order relation (many to one)
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Chef)
+                .WithMany(c => c.Orders)
+                .HasForeignKey(o => o.ChefId);
 
-			///////////seeding chef table/////////////
+            //MenuItem-SizePrice relation (many to one)
+            //modelBuilder.Entity<MenuItem>()
+            //.HasMany(m => m.SizePrices)
+            //.WithOne();
+            //modelBuilder.Entity<SizePrice>()
+            //.HasOne(s => s.MenuItem)
+            //.WithMany(m => m.SizePrices)
+            //.HasForeignKey(s => s.MenuItemId);
+
+            ///////////seeding chef table/////////////
 
 
 
-			modelBuilder.Entity<Chef>()
+            modelBuilder.Entity<Chef>()
 				.HasData(new Chef
 				{
 					ChefId = "30202929472263",

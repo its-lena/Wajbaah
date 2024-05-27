@@ -43,5 +43,9 @@ namespace Wajbah_API.Models
         //order-MenuItem relation (many to many)
         public ICollection<MenuItem> MenuItems { get; set; }
         public List<OrderMenuItem> OrderMenuItems { get; set; }
-	}
+
+        //Chef-Order relation (one to many)
+        public string ChefId { get; set; } //NationalID
+        public Chef Chef { get; set; }
+    }
 }
