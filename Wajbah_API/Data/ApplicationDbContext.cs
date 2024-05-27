@@ -83,13 +83,14 @@ namespace Wajbah_API.Data
 			modelBuilder.Entity<Order>()
 				.HasOne(o => o.PromoCode)
 				.WithMany(p => p.Orders)
-				.HasForeignKey(o => o.PromoCodeId);
+				.HasForeignKey(o => o.PromoCodeId)
+				.OnDelete(DeleteBehavior.SetNull);
 
-			//chef-ExtraMenuItem relation (many to one)
-			//modelBuilder.Entity<Chef>()
-			//.HasMany(c => c.ExtraMenuItems)
-			//.WithOne();
-			modelBuilder.Entity<ExtraMenuItem>()
+            //chef-ExtraMenuItem relation (many to one)
+            //modelBuilder.Entity<Chef>()
+            //.HasMany(c => c.ExtraMenuItems)
+            //.WithOne();
+            modelBuilder.Entity<ExtraMenuItem>()
 				.HasOne(e => e.Chef)
 				.WithMany(c => c.ExtraMenuItems)
 				.HasForeignKey(e => e.ChefId)
@@ -122,7 +123,7 @@ namespace Wajbah_API.Data
 			modelBuilder.Entity<Order>()
 				.HasOne(o => o.Customer)
 				.WithMany(c => c.Orders)
-				.HasForeignKey(o => o.CompanyId);
+				.HasForeignKey(o => o.CustomerId);
 
 			//order-ExtraMenuItem relation (many to one)
 			modelBuilder.Entity<Order>()

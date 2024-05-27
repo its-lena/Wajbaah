@@ -30,7 +30,6 @@ namespace Wajbah_API.Models.DTO
         [Required]
         [NotNull]
         public string Description { get; set; }
-        public decimal Rating { get; set; }
         public decimal Wallet { get; set; } = 0;
         [Required]
         public string ProfilePicture { get; set; }

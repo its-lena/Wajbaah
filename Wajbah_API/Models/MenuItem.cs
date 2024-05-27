@@ -24,7 +24,8 @@ namespace Wajbah_API.Models
         public string RestaurantPhoto { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime UpdatedOn { get; set; }
-        //chef-MenuItem relation (many to one)
+		//chef-MenuItem relation (many to one)
+		[Required]
         public string ChefId { get; set; }
         public Chef Chef { get; set; }
         //order-MenuItem relation (many to many)

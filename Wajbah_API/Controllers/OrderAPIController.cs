@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using Wajbah_API.Data;
 using Wajbah_API.Models;
@@ -18,15 +19,17 @@ namespace Wajbah_API.Controllers
         private readonly IMapper _mapper;
         protected APIResponse _response;
         protected readonly IMenuItemRepository _dbMenuItem;
+        protected readonly IPromoCodeRepository _dbPromoCode ;
         //will be replaced with needed IRepositories
         private readonly ApplicationDbContext _db;
-        public OrderAPIController(ApplicationDbContext db, IOrderRepository dbItem, IMapper mapper, IMenuItemRepository dbMenuItem)
+        public OrderAPIController(ApplicationDbContext db, IOrderRepository dbItem, IMapper mapper, IMenuItemRepository dbMenuItem, IPromoCodeRepository dbPromoCode)
         {
             _dbItem = dbItem;
             _mapper = mapper;
             _dbMenuItem = dbMenuItem;
             this._response = new();
             _db = db;
+            _dbPromoCode = dbPromoCode;
         }
 
         [HttpGet]
@@ -122,6 +125,28 @@ namespace Wajbah_API.Controllers
                 Order order = _mapper.Map<Order>(orderCreate);
 
                 order.MenuItems = menuItems;
+                PromoCode promoCode = null;
+                // Check if the promo code exists
+                if (orderCreate.PromoCodeId.HasValue)
+                {
+                    promoCode = await _dbPromoCode.GetAsync(p=>p.PromoCodeId==orderCreate.PromoCodeId);
+                    if (promoCode == null)
+                    {
+                        ModelState.AddModelError("Custom-Error","PromoCode not found");
+                        return BadRequest(ModelState);
+                    }
+                }
+                Company company = null;
+                // Check if the company exists
+                    company = await _db.Companies.FindAsync(orderCreate.CompanyId);
+                if (company == null)
+                    {
+                        ModelState.AddModelError("Custom-Error","company not found");
+                        return BadRequest(ModelState);
+                    }
+                
+                order.PromoCode = promoCode;
+                order.Company = company;
                 await _dbItem.CreateAsync(order);
 
                 _response.Result = _mapper.Map<OrderDTO>(order);

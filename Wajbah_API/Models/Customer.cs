@@ -21,6 +21,7 @@ namespace Wajbah_API.Models
         [Required]
 		public DateTime BirthDate { get; set; }
 		public decimal Wallet { get; set; }
+        public bool State { get; set; } = true;
         public string? Favourites { get; set; }
         public string? UsedCoupones { get; set; }
         //Customer-Order relation (many to one)

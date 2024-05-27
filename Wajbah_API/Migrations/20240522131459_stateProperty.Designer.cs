@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wajbah_API.Data;
 
@@ -11,9 +12,11 @@ using Wajbah_API.Data;
 namespace Wajbah_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240522131459_stateProperty")]
+    partial class stateProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -381,7 +384,7 @@ namespace Wajbah_API.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PromoCodeId")
+                    b.Property<int>("PromoCodeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -396,8 +399,6 @@ namespace Wajbah_API.Migrations
                     b.HasKey("OrderId");
 
                     b.HasIndex("CompanyId");
-
-                    b.HasIndex("CustomerId");
 
                     b.HasIndex("PromoCodeId");
 
@@ -620,14 +621,15 @@ namespace Wajbah_API.Migrations
 
                     b.HasOne("Wajbah_API.Models.Customer", "Customer")
                         .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Wajbah_API.Models.PromoCode", "PromoCode")
                         .WithMany("Orders")
                         .HasForeignKey("PromoCodeId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Company");
 

@@ -31,7 +31,8 @@ namespace Wajbah_API.Models
 		//:(اعمليها انتي يا لينا
 		public double Rating { get; set; } = 5.0;
 		public decimal Wallet { get; set; }
-		[Required]
+        public bool State { get; set; } = false;
+        [Required]
 		public string ProfilePicture { get; set; }
 		[Required]
 		public Address Address { get; set; }

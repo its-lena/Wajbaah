@@ -27,7 +27,7 @@ namespace Wajbah_API.Models.DTO
 		public bool CashDelivered { get; set; }
 		[Required]
 		public string EstimatedTime { get; set; }
-		public int PromoCodeId { get; set; }
+		public int? PromoCodeId { get; set; }
 		public int CompanyId { get; set; }
 		[Required]
 		public int CustomerId { get; set; }

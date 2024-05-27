@@ -27,7 +27,7 @@ namespace Wajbah_API.Models
 		public bool CashDelivered { get; set; }
 		public string EstimatedTime { get; set; }
         //promocode-order relation (many to one)
-        public int PromoCodeId { get; set; }
+        public int? PromoCodeId { get; set; }
         public PromoCode PromoCode { get; set; }
         //order-ExtraMenuItem relation (many to many)
         public ICollection<ExtraMenuItem> ExtraMenuItems { get; set; }
