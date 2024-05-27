@@ -1,0 +1,198 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    background-color: #f2f5fc;
+}
+
+.sidebar {
+    height: 100vh;
+    background-color: #e9eff9;
+    padding: 1rem;
+}
+
+    .sidebar .nav-link {
+        color: #333;
+    }
+
+        .sidebar .nav-link.active {
+            color: #28a745;
+        }
+
+.navbar {
+    background-color: #4a90e2;
+}
+
+    .navbar .navbar-brand {
+        color: white;
+        font-weight: bold;
+    }
+
+    .navbar .nav-link {
+        color: white;
+    }
+
+.content {
+    padding: 2rem;
+}
+
+.card {
+    margin-bottom: 1rem;
+}
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+    .profile-header img {
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .profile-header h2 {
+        margin: 0;
+    }
+.status {
+    display: flex;
+    align-items: center;
+}
+    .status span {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 5px;
+    }
+.online-status {
+    display: flex;
+    align-items: center;
+}
+
+    .online-status span {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-left: 10px;
+    }
+
+.online {
+    background-color: green;
+}
+
+.offline {
+    background-color: red;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+    .form-group label {
+        font-weight: bold;
+    }
+.order-item {
+    position: relative;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+    .order-item:hover {
+        background-color: #f5f5f5;
+    }
+
+.order-details {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.order-item:hover .order-details {
+    display: block;
+}
+
+/*dashboard*/
+.widget {
+    border-radius: 1rem;
+    background-color: #1a222b;
+}
+
+    .widget.summary > div:first-child {
+        background-color: #222b33;
+        padding: 1rem;
+        border-top-left-radius: 1rem;
+        border-bottom-left-radius: 1rem;
+    }
+
+        .widget.summary > div:first-child i {
+            font-weight: bold;
+        }
+
+    .widget.income > div:first-child {
+        color: #65da41;
+    }
+
+    .widget.expense > div:first-child {
+        color: #ff4e48;
+    }
+
+    .widget.balance > div:first-child {
+        color: #2aa1ff;
+    }
+
+    .widget.chart {
+        padding: 5px;
+    }
+
+.my-custom-link {
+    color: white;
+    text-decoration: none;
+}
+
+    .my-custom-link:hover {
+    }
+
+.sideways-text {
+    text-orientation: sideways; /* Set the orientation to sideways */
+}
+
+.special-text {
+    font-family: 'Font Awesome 6 Brands';
+    font-size: 15px;
+    color: #65da41;
+}

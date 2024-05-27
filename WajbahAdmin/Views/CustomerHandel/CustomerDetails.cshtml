@@ -1,0 +1,46 @@
+﻿@using WajbahAdmin.Models.Dto
+@model CustomerDto
+
+<div class="container">
+    <div class="profile-header">
+        <img src="https://via.placeholder.com/50" alt="Profile Picture">
+        <h2>@Model.FirstName @Model.LastName</h2>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label>Email</label>
+            <input type="text" class="form-control" value="@Model.Email" readonly>
+        </div>
+        <div class="col-md-6 form-group">
+            <form asp-action="ChangeState" asp-route-id="@Model.CustomerId" method="post">
+                <button type="submit" class="btn @(Model.State ? "btn-success":"btn-danger")">
+                    @(Model.State ? "Activate" : "Deactivate")
+                </button>
+            </form>
+        </div>
+        <div class="col-md-6 form-group">
+            <label>ID</label>
+            <input type="text" class="form-control" value="@Model.CustomerId" readonly>
+        </div>
+        <div class="col-md-6 form-group">
+            <label>Phone Number</label>
+            <input type="text" class="form-control" value="@Model.PhoneNumber" readonly>
+        </div>
+        <div class="col-md-6 form-group">
+            <label>BirthDate</label>
+            <input type="text" class="form-control" value="@Model.BirthDate" readonly>
+        </div>
+        
+        <div class="col-md-6 form-group">
+            <label>Favourits</label>
+            <input type="text" class="form-control" value="@Model.Favourites" readonly>
+        </div>
+        <div class="col-md-6 form-group">
+            <label>Wallet</label>
+            <input type="text" class="form-control" value="@Model.Wallet" readonly>
+        </div>
+        <div class="col-md-6 form-group">
+            <h4><a asp-action="ShowOrders" asp-route-id="@Model.CustomerId">Go to orders</a></h4>
+        </div>
+    </div>
+</div>

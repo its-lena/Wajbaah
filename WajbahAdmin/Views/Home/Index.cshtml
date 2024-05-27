@@ -1,0 +1,68 @@
+﻿<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="d-flex flex-row widget summary income">
+            <div class="d-flex flex-column justify-content-center p-5">
+                <span style="font-size: 2rem; color: green;">🟢</span> <!-- Online symbol -->
+            </div>
+            <div class="d-flex flex-column m-auto py-3">
+                <span class="lead" style="color:#ffff">Online Chefs</span>
+                <h1 class="display-6 fw-bold" style="color:#ffff">@ViewBag.OnlineChefs</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="d-flex flex-row widget summary expense">
+            <div class="d-flex flex-column justify-content-center p-5">
+                <span style="font-size: 2rem; color: red;">🔴</span> <!-- Offline symbol -->
+            </div>
+            <div class="d-flex flex-column m-auto py-3">
+                <span class="lead" style="color:#ffff">Offline Chefs</span>
+                <h1 class="display-6 fw-bold" style="color:#ffff">@ViewBag.OfflineChefs</h1>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="widget chart">
+            <div class="p-4">
+                <h5 class="fw-bold" style="color:#ffff">Valid VS Suspended Chef accounts</h5>
+            </div>
+            <ejs-accumulationchart id="doughnutchart" enableSmartLabels >
+                <e-accumulation-series-collection>
+                    <e-accumulation-series dataSource="@ViewBag.ChefdoughnutChartData"
+                                           xName="State" yName="Count"
+                                           innerRadius="50%" legendShape="Circle" palettes=@(new string[]{"#3498db","#e74c3c"})>
+                        <e-accumulationseries-datalabel name="FormattedCount" visible></e-accumulationseries-datalabel>
+                    </e-accumulation-series>
+                </e-accumulation-series-collection>
+                <e-accumulationchart-legendsettings position="Top">
+                    <e-legendsettings-textstyle color="#fff" size="1 rem"></e-legendsettings-textstyle>
+                </e-accumulationchart-legendsettings>
+                <e-accumulationchart-tooltipsettings enable></e-accumulationchart-tooltipsettings>
+            </ejs-accumulationchart>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="widget chart">
+            <div class="p-4">
+                <h5 class="fw-bold" style="color:#ffff">Valid VS Suspended Customer accounts</h5>
+            </div>
+            <ejs-accumulationchart id="doughnutchart2" enableSmartLabels >
+                <e-accumulation-series-collection>
+                    <e-accumulation-series dataSource="@ViewBag.CustomerdoughnutChartData"
+                                           xName="State" yName="Count"
+                                           innerRadius="50%" legendShape="Circle" palettes=@(new string[]{"#2ecc71","#f1c40f"})>
+                        <e-accumulationseries-datalabel name="FormattedCount" visible></e-accumulationseries-datalabel>
+                    </e-accumulation-series>
+                </e-accumulation-series-collection>
+                <e-accumulationchart-legendsettings position="Top">
+                    <e-legendsettings-textstyle color="#fff" size="1 rem"></e-legendsettings-textstyle>
+                </e-accumulationchart-legendsettings>
+                <e-accumulationchart-tooltipsettings enable></e-accumulationchart-tooltipsettings>
+            </ejs-accumulationchart>
+        </div>
+    </div>
+</div>

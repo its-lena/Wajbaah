@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Wajbah</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/25.2.3/material.css" />
+    <link href="https://cdn.syncfusion.com/ej2/24.2.3/bootstrap5-dark.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <script src="https://cdn.syncfusion.com/ej2/25.2.3/dist/ej2.min.js"></script>
+
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index">Wajbahوچبة</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Help</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-wallet"></i> 500</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-bell"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Kareem Alaa</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" asp-controller="Home" asp-action="Index">
+                                <i class="fas fa-home"></i>
+                                Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="CustomerHandel" asp-action="Search">
+                                <i class="fas fa-users"></i>
+                                Customers
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-chart-bar"></i>
+                                Reports
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="ChefHandel" asp-action="Search">
+                                <i class="fas fa-user-tie"></i>
+                                Chefs
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-cogs"></i>
+                                Settings
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 content">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+    <ejs-scripts></ejs-scripts>
+
+</body>
+</html>
