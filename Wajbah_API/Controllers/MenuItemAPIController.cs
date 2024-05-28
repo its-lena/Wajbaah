@@ -58,7 +58,8 @@ namespace Wajbah_API.Controllers
                     Description = menuItem.Description,
                     Rate= menuItem.Rate,
                     Photo = menuItem.Photo,
-                    RestaurantPhoto = menuItem.Chef?.ProfilePicture
+                    RestaurantPhoto = menuItem.Chef?.ProfilePicture,
+                    ChefId = menuItem.ChefId
 				}).ToList();
 
                 _response.Result = menuDtoList;
