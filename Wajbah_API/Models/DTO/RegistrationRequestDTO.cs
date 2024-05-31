@@ -9,7 +9,6 @@ namespace Wajbah_API.Models.DTO
 		public string Password { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
-		public string Role { get; set; }
 		public DateTime BirthDate { get; set; }
         public string? Favourites { get; set; }
         public string? UsedCoupones { get; set; }//??????????????????????????

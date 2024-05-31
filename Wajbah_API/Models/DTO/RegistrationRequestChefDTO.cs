@@ -13,7 +13,6 @@ namespace Wajbah_API.Models.DTO
 		public string RestaurantName { get; set; }
 		public DateTime BirthDate { get; set; }
 		public string Description { get; set; }
-		public string Role { get; set; }
 		public string ProfilePicture { get; set; }
 		public Address Address { get; set; }
 	}

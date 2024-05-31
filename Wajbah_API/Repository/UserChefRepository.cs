@@ -82,7 +82,6 @@ namespace Wajbah_API.Repository
 				RestaurantName = registrationRequestChefDTO.RestaurantName,
 				BirthDate = registrationRequestChefDTO.BirthDate,
 				Description = registrationRequestChefDTO.Description,
-				Role = registrationRequestChefDTO.Role,
 				ProfilePicture = registrationRequestChefDTO.ProfilePicture,
 				Address = registrationRequestChefDTO.Address
 			};

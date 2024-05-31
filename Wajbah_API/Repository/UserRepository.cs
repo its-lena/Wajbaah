@@ -89,7 +89,6 @@ namespace Wajbah_API.Repository
 				BirthDate = registrationRequestDTO.BirthDate,
 				Email = registrationRequestDTO.Email,
 				Password = registrationRequestDTO.Password,
-				Role = registrationRequestDTO.Role,
 				UsedCoupones = registrationRequestDTO.UsedCoupones,
 				Favourites = registrationRequestDTO.Favourites
 			};
