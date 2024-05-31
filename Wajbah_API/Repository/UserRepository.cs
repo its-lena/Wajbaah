@@ -44,29 +44,39 @@ namespace Wajbah_API.Repository
 				};
 			}
 
-			// if customer data exists
-			var tokenHandler = new JwtSecurityTokenHandler();
-			var key = Encoding.ASCII.GetBytes(secretKey);
+            // if customer data exists
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(secretKey);
 
-			var tokenDescriptor = new SecurityTokenDescriptor
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                    new Claim(ClaimTypes.Name, cust.CustomerId.ToString()),
+                    new Claim(ClaimTypes.Role, cust.Role)
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(7),
+                    SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
+
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                LoginResponseDTO loginResponseDTO = new LoginResponseDTO()
+                {
+                    Token = tokenHandler.WriteToken(token),
+                    customer = cust
+                };
+
+                return loginResponseDTO;
+            }
+			catch (Exception ex)
 			{
-				Subject = new ClaimsIdentity(new Claim[]
-				{
-					new Claim(ClaimTypes.Name, cust.CustomerId.ToString()),
-					new Claim(ClaimTypes.Role, cust.Role)
-				}),
-				Expires = DateTime.UtcNow.AddDays(7),
-				SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-			};
-
-			var token = tokenHandler.CreateToken(tokenDescriptor);
-			LoginResponseDTO loginResponseDTO = new LoginResponseDTO()
-			{
-				Token = tokenHandler.WriteToken(token),
-				customer = cust
-			};
-
-			return loginResponseDTO;
+				return new LoginResponseDTO();
+			}
+			
+			
+			
 		}
 
 		public async Task<Customer> Register(RegistrationRequestDTO registrationRequestDTO)

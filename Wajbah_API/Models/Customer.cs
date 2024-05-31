@@ -17,7 +17,7 @@ namespace Wajbah_API.Models
 		public string FirstName { get; set; }
 		[Required, MaxLength(25)]
 		public string LastName { get; set; }
-        public string Role { get; set; }
+		public string Role { get; set; } = "customer";
         [Required]
 		public DateTime BirthDate { get; set; }
 		public decimal Wallet { get; set; }

@@ -30,8 +30,15 @@ namespace Wajbah_API.Controllers
 				_response.ErrorMessages.Add("Username or Password is incorrect");
 				return BadRequest(_response);
 			}
+            if (loginResponse.chef.State == false)
+            {
+                _response.StatusCode = HttpStatusCode.Unauthorized;
+                _response.IsSuccess = false;
+                _response.ErrorMessages.Add("This User is suspended");
+                return Unauthorized(_response);
+            }
 
-			_response.StatusCode = HttpStatusCode.OK;
+            _response.StatusCode = HttpStatusCode.OK;
 			_response.IsSuccess = true;
 			_response.Result = loginResponse;
 			return Ok(_response);
