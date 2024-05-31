@@ -26,22 +26,22 @@ namespace Wajbah_API.Models
 		public string Copoun { get; set; }
 		public bool CashDelivered { get; set; }
 		public string EstimatedTime { get; set; }
-        //promocode-order relation (many to one)
-        public int? PromoCodeId { get; set; }
-        public PromoCode PromoCode { get; set; }
+		//promocode-order relation (many to one)
+		public int? PromoCodeId { get; set; } = null;
+        public PromoCode? PromoCode { get; set; }
         //order-ExtraMenuItem relation (many to many)
         public ICollection<ExtraMenuItem> ExtraMenuItems { get; set; }
         public List<OrderExtraMenuItem> OrderExtraMenuItems { get; set; }
 
-        //Company-Order relation (many to one)
-        public int CompanyId { get; set; }
-        public Company Company { get; set; }
+		//Company-Order relation (many to one)
+		public int? CompanyId { get; set; } = null;
+        public Company? Company { get; set; }
 		
         //customer-Order relation (many to one)
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
         //order-MenuItem relation (many to many)
-        public ICollection<MenuItem> MenuItems { get; set; }
+        public List<MenuItem> MenuItems { get; set; }
         public List<OrderMenuItem> OrderMenuItems { get; set; }
 
         //Chef-Order relation (one to many)

@@ -22,16 +22,20 @@ namespace Wajbah_API.Models.DTO
 		public DateTime DeliveryTime { get; set; }
 		[Required]
 		public string Status { get; set; }
-		public string Copoun { get; set; }
+        public List<int> Quanitities { get; set; }
+        public List<string> Sizes { get; set; }
+        public string Copoun { get; set; }
 		[Required]
 		public bool CashDelivered { get; set; }
 		[Required]
 		public string EstimatedTime { get; set; }
-		public int PromoCodeId { get; set; }
-		public int CompanyId { get; set; }
+		public int? PromoCodeId { get; set; }
+		public int? CompanyId { get; set; }
 		[Required]
 		public int CustomerId { get; set; }
-		public ICollection<Menu_ItemDTO> MenuItems { get; set; }
+		public List<Menu_ItemDTO> MenuItems { get; set; }
+		//test
+        //public List<OrderMenuItem> orderMenuItems { get; set; }
         [Required]
         public string ChefId { get; set; }
     }

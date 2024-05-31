@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wajbah_API.Data;
 
@@ -11,9 +12,11 @@ using Wajbah_API.Data;
 namespace Wajbah_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240531063112_updateNullablesInOrder")]
+    partial class updateNullablesInOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,7 +88,7 @@ namespace Wajbah_API.Migrations
                     b.HasIndex("Email", "PhoneNumber")
                         .IsUnique();
 
-                    b.ToTable("Chefs", (string)null);
+                    b.ToTable("Chefs");
 
                     b.HasData(
                         new
@@ -119,7 +122,7 @@ namespace Wajbah_API.Migrations
 
                     b.HasIndex("PromoCodeId");
 
-                    b.ToTable("ChefPromoCode", (string)null);
+                    b.ToTable("ChefPromoCode");
                 });
 
             modelBuilder.Entity("Wajbah_API.Models.Company", b =>
@@ -165,7 +168,7 @@ namespace Wajbah_API.Migrations
                     b.HasIndex("Email", "PhoneNumber")
                         .IsUnique();
 
-                    b.ToTable("Companies", (string)null);
+                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("Wajbah_API.Models.Customer", b =>
@@ -220,7 +223,7 @@ namespace Wajbah_API.Migrations
                         .IsUnique()
                         .HasFilter("[Email] IS NOT NULL");
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("Wajbah_API.Models.ExtraMenuItem", b =>
@@ -254,7 +257,7 @@ namespace Wajbah_API.Migrations
 
                     b.HasIndex("ChefId");
 
-                    b.ToTable("ExtraMenuItems", (string)null);
+                    b.ToTable("ExtraMenuItems");
                 });
 
             modelBuilder.Entity("Wajbah_API.Models.ItemRateRecord", b =>
@@ -274,7 +277,7 @@ namespace Wajbah_API.Migrations
 
                     b.HasIndex("MenuItemId");
 
-                    b.ToTable("ItemRateRecords", (string)null);
+                    b.ToTable("ItemRateRecords");
                 });
 
             modelBuilder.Entity("Wajbah_API.Models.MenuItem", b =>
@@ -338,7 +341,7 @@ namespace Wajbah_API.Migrations
 
                     b.HasIndex("ChefId");
 
-                    b.ToTable("MenuItems", (string)null);
+                    b.ToTable("MenuItems");
                 });
 
             modelBuilder.Entity("Wajbah_API.Models.Order", b =>
@@ -406,7 +409,7 @@ namespace Wajbah_API.Migrations
 
                     b.HasIndex("PromoCodeId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Wajbah_API.Models.OrderExtraMenuItem", b =>
@@ -424,7 +427,7 @@ namespace Wajbah_API.Migrations
 
                     b.HasIndex("ExtraMenuItemId");
 
-                    b.ToTable("OrderExtraMenuItem", (string)null);
+                    b.ToTable("OrderExtraMenuItem");
                 });
 
             modelBuilder.Entity("Wajbah_API.Models.OrderMenuItem", b =>
@@ -445,7 +448,7 @@ namespace Wajbah_API.Migrations
 
                     b.HasIndex("MenuItemId");
 
-                    b.ToTable("OrderMenuItem", (string)null);
+                    b.ToTable("OrderMenuItem");
                 });
 
             modelBuilder.Entity("Wajbah_API.Models.PromoCode", b =>
@@ -483,12 +486,12 @@ namespace Wajbah_API.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("PromoCodes", (string)null);
+                    b.ToTable("PromoCodes");
                 });
 
             modelBuilder.Entity("Wajbah_API.Models.Chef", b =>
                 {
-                    b.OwnsOne("Wajbah_API.Models.Chef.Address#Wajbah_API.Models.Address", "Address", b1 =>
+                    b.OwnsOne("Wajbah_API.Models.Address", "Address", b1 =>
                         {
                             b1.Property<string>("ChefId")
                                 .HasColumnType("nvarchar(14)");
@@ -519,7 +522,7 @@ namespace Wajbah_API.Migrations
 
                             b1.HasKey("ChefId");
 
-                            b1.ToTable("Chefs", (string)null);
+                            b1.ToTable("Chefs");
 
                             b1.WithOwner()
                                 .HasForeignKey("ChefId");
@@ -584,7 +587,7 @@ namespace Wajbah_API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Wajbah_API.Models.MenuItem.SizesPrices#Wajbah_API.Models.SizesPrice", "SizesPrices", b1 =>
+                    b.OwnsOne("Wajbah_API.Models.SizesPrice", "SizesPrices", b1 =>
                         {
                             b1.Property<int>("MenuItemId")
                                 .HasColumnType("int");
@@ -603,7 +606,7 @@ namespace Wajbah_API.Migrations
 
                             b1.HasKey("MenuItemId");
 
-                            b1.ToTable("MenuItems", (string)null);
+                            b1.ToTable("MenuItems");
 
                             b1.WithOwner()
                                 .HasForeignKey("MenuItemId");
