@@ -247,7 +247,7 @@ namespace Wajbah_API.Controllers
                     _response.IsSuccess = false;
                     return BadRequest(_response);
                 }
-                var orders = await _dbItem.GetAllAsync(o => o.ChefId == chefId && o.Status=="Pending");
+                var orders = await _dbItem.GetAllAsync(o => o.ChefId == chefId && o.Status=="Pending", includeProperties: x => x.MenuItems);
                 if (orders == null)
                 {
                     _response.IsSuccess = false;
