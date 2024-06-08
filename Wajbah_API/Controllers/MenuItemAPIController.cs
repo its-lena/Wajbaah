@@ -9,8 +9,8 @@ using Wajbah_API.Repository.IRepository;
 
 namespace Wajbah_API.Controllers
 {
-	
-	[ApiController]
+
+    [ApiController]
     [Route("api/MenuItemAPI")]
     public class MenuItemAPIController : ControllerBase
     {
@@ -34,21 +34,21 @@ namespace Wajbah_API.Controllers
 
         [Authorize]
         [HttpGet]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-		[ProducesResponseType(StatusCodes.Status403Forbidden)]
-		public async Task<ActionResult<APIResponse>> GetMenuItems()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<APIResponse>> GetMenuItems()
         {
             try
             {
                 IEnumerable<MenuItem> MenuItemList = await _dbItem.GetAllAsync(includeProperties: x => x.Chef);
 
-				var menuDtoList = MenuItemList.Select(menuItem => new Menu_ItemDTO
-				{
-					// Map properties from MenuItem to Menu_ItemDTO
-					MenuItemId = menuItem.MenuItemId,
-					Name = menuItem.Name,
-					RestaurantName = menuItem.Chef?.RestaurantName,
+                var menuDtoList = MenuItemList.Select(menuItem => new Menu_ItemDTO
+                {
+                    // Map properties from MenuItem to Menu_ItemDTO
+                    MenuItemId = menuItem.MenuItemId,
+                    Name = menuItem.Name,
+                    RestaurantName = menuItem.Chef?.RestaurantName,
                     EstimatedTime = menuItem.EstimatedTime,
                     OrderingTime = menuItem.OrderingTime,
                     Category = menuItem.Category,
@@ -56,14 +56,14 @@ namespace Wajbah_API.Controllers
                     SizesPrices = menuItem.SizesPrices,
                     HealthyMode = menuItem.HealthyMode,
                     Description = menuItem.Description,
-                    Rate= menuItem.Rate,
+                    Rate = menuItem.Rate,
                     Photo = menuItem.Photo,
                     RestaurantPhoto = menuItem.Chef?.ProfilePicture,
                     ChefId = menuItem.ChefId
-				}).ToList();
+                }).ToList();
 
                 _response.Result = menuDtoList;
-				_response.StatusCode = HttpStatusCode.OK;
+                _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
             }
             catch (Exception ex)
@@ -76,13 +76,13 @@ namespace Wajbah_API.Controllers
         }
 
         [Authorize]
-        [HttpGet("{id:int}", Name ="GetMenuItem")]
+        [HttpGet("{id:int}", Name = "GetMenuItem")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-		[ProducesResponseType(StatusCodes.Status403Forbidden)]
-		public async Task<ActionResult<APIResponse>> GetMenuItem (int id)
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<APIResponse>> GetMenuItem(int id)
         {
             try
             {
@@ -107,13 +107,54 @@ namespace Wajbah_API.Controllers
 
                 _response.Result = menuItemDto;
 
-				_response.StatusCode = HttpStatusCode.OK;
+                _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
             }
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
-                _response.ErrorMessages=
+                _response.ErrorMessages =
+                    new List<string>() { ex.Message };
+            }
+            return _response;
+        }
+        [Authorize]
+        [HttpGet("GetMenuItemsByChefId", Name = "GetMenuItemsByChefId")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<APIResponse>> GetMenuItemsByChefId(string id)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                {
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccess = false;
+                    return BadRequest(_response);
+                }
+                var menuItems = await _dbItem.GetAllAsync(u => u.ChefId == id);
+                if (menuItems == null)
+                {
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.NotFound;
+                    return NotFound(_response);
+                }
+
+
+                IEnumerable<Menu_ItemDTO> menuItemsDto = _mapper.Map<IEnumerable<Menu_ItemDTO>>(menuItems);
+
+                _response.Result = menuItemsDto;
+
+                _response.StatusCode = HttpStatusCode.OK;
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages =
                     new List<string>() { ex.Message };
             }
             return _response;
@@ -124,9 +165,9 @@ namespace Wajbah_API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-		[ProducesResponseType(StatusCodes.Status403Forbidden)]
-		public async Task<ActionResult<APIResponse>> CreateMenuItem([FromBody] Menu_ItemCreateDTO menuItemCreate)
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<APIResponse>> CreateMenuItem([FromBody] Menu_ItemCreateDTO menuItemCreate)
         {
             try
             {
@@ -148,11 +189,11 @@ namespace Wajbah_API.Controllers
                     return BadRequest(_response);
                 }
                 /////////////////////////////////////////////////////////////////////////////////////////
-                if(await _db.Chefs.FirstOrDefaultAsync(c => c.ChefId == menuItemCreate.ChefId) == null)
+                if (await _db.Chefs.FirstOrDefaultAsync(c => c.ChefId == menuItemCreate.ChefId) == null)
                 {
-					ModelState.AddModelError("Custom-Error", "chef is not found");
-					return BadRequest(ModelState);
-				}
+                    ModelState.AddModelError("Custom-Error", "chef is not found");
+                    return BadRequest(ModelState);
+                }
 
                 MenuItem menuItem = _mapper.Map<MenuItem>(menuItemCreate);
                 await _dbItem.CreateAsync(menuItem);
@@ -176,9 +217,9 @@ namespace Wajbah_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-		[ProducesResponseType(StatusCodes.Status403Forbidden)]
-		public async Task<ActionResult<APIResponse>> DeleteMenuItem(int id)
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<APIResponse>> DeleteMenuItem(int id)
         {
             try
             {
@@ -204,7 +245,7 @@ namespace Wajbah_API.Controllers
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
-                _response.ErrorMessages= 
+                _response.ErrorMessages =
                     new List<string>() { ex.Message };
             }
             return _response;
@@ -215,9 +256,9 @@ namespace Wajbah_API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-		[ProducesResponseType(StatusCodes.Status403Forbidden)]
-		public async Task<ActionResult<APIResponse>> UpdateMenuItem (int id, [FromBody]Menu_ItemUpdateDTO menuItemUpdate)
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<APIResponse>> UpdateMenuItem(int id, [FromBody] Menu_ItemUpdateDTO menuItemUpdate)
         {
             try
             {
@@ -237,7 +278,7 @@ namespace Wajbah_API.Controllers
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
-                _response.ErrorMessages=
+                _response.ErrorMessages =
                     new List<string>() { ex.Message };
             }
             return _response;
@@ -252,7 +293,7 @@ namespace Wajbah_API.Controllers
         {
             try
             {
-                if (dto.MenuItemId == 0 || dto.CustomerId==0)
+                if (dto.MenuItemId == 0 || dto.CustomerId == 0)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     _response.IsSuccess = false;
@@ -269,7 +310,7 @@ namespace Wajbah_API.Controllers
 
                 MenuItem.Rate = _dbItem.UpdateRate(dto.Rating, MenuItem.Rate);
                 await _dbItem.UpdateAsync(MenuItem);
-                _response.Result =await _itemRateRepository.SetRate(dto);
+                _response.Result = await _itemRateRepository.SetRate(dto);
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
             }
@@ -281,14 +322,59 @@ namespace Wajbah_API.Controllers
             }
             return _response;
         }
-        
-        [HttpGet("GetAllRatings",Name = "GetAllRatings")]
+
+        [HttpGet("GetAllRatings", Name = "GetAllRatings")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<APIResponse>> GetAllRatings()
         {
             try
             {
                 _response.Result = await _itemRateRepository.GetAllRates();
+                _response.StatusCode = HttpStatusCode.OK;
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages =
+                    new List<string>() { ex.Message };
+            }
+            return _response;
+        }
+
+        [HttpPost("FiveMenuItems", Name = "FiveMenuItems")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<APIResponse>> FiveMenuItems([FromBody] List<int> ids)
+        {
+            try
+            {
+                if (ids == null)
+                {
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccess = false;
+                    return BadRequest(_response);
+                }
+                List<Menu_ItemDTO> menuItems = new List<Menu_ItemDTO>();
+                foreach (int id in ids)
+                {
+                    var menuItem = await _dbItem.GetAsync(u => u.MenuItemId == id, includeProperties: x => x.Chef);
+                    if (menuItem == null)
+                    {
+                        _response.IsSuccess = false;
+                        _response.ErrorMessages.Append("the Item with the ID {id}");
+                        _response.StatusCode = HttpStatusCode.NotFound;
+                        return NotFound(_response);
+                    }
+                    var result = _mapper.Map<Menu_ItemDTO>(menuItem);
+                    result.RestaurantName = menuItem.Chef.RestaurantName;
+                    result.RestaurantPhoto = menuItem.Chef.ProfilePicture;
+                    menuItems.Add(result);
+                }
+                _response.Result = menuItems;
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
             }

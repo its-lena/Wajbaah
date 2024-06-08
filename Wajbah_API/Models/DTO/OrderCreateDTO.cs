@@ -20,8 +20,6 @@ namespace Wajbah_API.Models.DTO
 		public DateTime CreatedOn { get; set; }
 		[Required]
 		public DateTime DeliveryTime { get; set; }
-		[Required]
-		public string Status { get; set; }
 		public List<int> Quanitities { get; set; }
 		public List<string> Sizes { get; set; }
 		public string Copoun { get; set; }

@@ -37,6 +37,10 @@ namespace Wajbah_API.Data
 			modelBuilder.Entity<Order>()
 				.Property(o => o.CreatedOn)
 				.HasDefaultValueSql("GETDATE()");
+			
+			modelBuilder.Entity<Order>()
+				.Property(o => o.Status)
+				.HasDefaultValue("Pending");
 
 			modelBuilder.Entity<MenuItem>()
 				.Property(m => m.CreatedOn)

@@ -22,7 +22,7 @@ namespace Wajbah_API.Models
 		public DateTime CreatedOn { get; set; }
 		[Required]
 		public DateTime DeliveryTime { get; set; }
-		public string Status { get; set; }
+		public string Status { get; set; } = "Pending";
 		public string Copoun { get; set; }
 		public bool CashDelivered { get; set; }
 		public string EstimatedTime { get; set; }
