@@ -177,7 +177,7 @@ namespace Wajbah_API.Controllers
 				}
 				model = _mapper.Map<Chef>(chefUpdate);
 				model.ChefId = id;
-				model.ProfilePicture = "";
+				//model.ProfilePicture = "";
 				await _dbChef.UpdateAsync(model);
 				_response.StatusCode = HttpStatusCode.OK;
 				_response.Result = chefUpdate;
