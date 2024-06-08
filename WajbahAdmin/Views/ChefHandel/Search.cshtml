@@ -35,13 +35,13 @@
                 <tr>
                     <td><a asp-action="ChefDetails" asp-route-id="@user.ChefId">@user.ChefFirstName  @user.ChefLastName</a></td>
                     <td class="btn @(user.State == true ? "green" : "red")">
-                        @(user.State == false ? "Active" : "Not Active")
+                        @(user.State == true ? "Active" : "Not Active")
                     </td>
                     <td>
                         <div class="col-md-6 form-group">
                         <form asp-action="ChangeState" asp-route-id="@user.ChefId" method="post">
-                            <button type="submit" class="btn @(user.State ? "btn-success":"btn-danger")">
-                                @(user.State ? "Activate" : "Deactivate")
+                                <button type="submit" class="btn @(user.State ? "btn-danger":"btn-success")">
+                                @(user.State ? "Dectivate" : "Activate")
                             </button>
                         </form>
                         </div>

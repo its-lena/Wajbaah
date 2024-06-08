@@ -1,5 +1,5 @@
 ﻿<div class="row mb-4">
-    <div class="col-md-6">
+    <div class="col-md-3">
         <div class="d-flex flex-row widget summary income">
             <div class="d-flex flex-column justify-content-center p-5">
                 <span style="font-size: 2rem; color: green;">🟢</span> <!-- Online symbol -->
@@ -10,11 +10,10 @@
             </div>
         </div>
     </div>
-
-    <div class="col-md-6">
+    <div class="col-md-3">
         <div class="d-flex flex-row widget summary expense">
             <div class="d-flex flex-column justify-content-center p-5">
-                <span style="font-size: 2rem; color: red;">🔴</span> <!-- Offline symbol -->
+                <span style="font-size: 2rem; color: red;">🔴</span>
             </div>
             <div class="d-flex flex-column m-auto py-3">
                 <span class="lead" style="color:#ffff">Offline Chefs</span>
@@ -22,7 +21,61 @@
             </div>
         </div>
     </div>
-
+    <div class="col-md-3">
+        <div class="d-flex flex-row widget summary expense">
+            <div class="d-flex flex-column justify-content-center p-5">
+                <span style="font-size: 2rem; color: green;">⏫</span>
+            </div>
+            <div class="d-flex flex-column m-auto py-3">
+                <span class="lead" style="color:#ffff">Customer Counter</span>
+                <h1 class="display-6 fw-bold" style="color:#ffff">@ViewBag.CustomersNumber</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="d-flex flex-row widget summary expense">
+            <div class="d-flex flex-column justify-content-center p-5">
+                <span style="font-size: 2rem; color: green;">⏫</span>
+            </div>
+            <div class="d-flex flex-column m-auto py-3">
+                <span class="lead" style="color:#ffff">Orders Counter</span>
+                <h1 class="display-6 fw-bold" style="color:#ffff">@ViewBag.OrdersNumber</h1>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="widget chart">
+            <div class="p-4">
+                <h5 class="fw-bold" style="color:#ffff">Orders</h5>
+            </div>
+            <ejs-chart id="spline-chart" background="#1a222b"
+                       palettes=@(new string[]{"#54ffa9","#ffe91a"})>
+                <e-chart-primaryxaxis valueType="Category">
+                    <e-majorgridlines width="0"></e-majorgridlines>
+                    <e-majorticklines width="0"></e-majorticklines>
+                </e-chart-primaryxaxis>
+                <e-chart-primaryyaxis>
+                    <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
+                    <e-majorticklines width="0"></e-majorticklines>
+                    <e-linestyle width="0"></e-linestyle>
+                </e-chart-primaryyaxis>
+                <e-chart-chartarea>
+                    <e-chartarea-border width="0"></e-chartarea-border>
+                </e-chart-chartarea>
+                <e-series-collection>
+                    <e-series dataSource="@ViewBag.SplineChartData" xName="day" width="3"
+                              yName="income" name="Income" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Spline"></e-series>
+                </e-series-collection>
+                <e-chart-legendsettings position="Top" alignment="Far" toggleVisibility="false">
+                    <e-legendsettings-textstyle color="#fff" size="1rem"></e-legendsettings-textstyle>
+                </e-chart-legendsettings>
+                <e-chart-tooltipsettings enable shared></e-chart-tooltipsettings>
+            </ejs-chart>
+        </div>
+    </div>
 </div>
 <div class="row mb-4">
     <div class="col-md-6">
