@@ -1,9 +1,9 @@
 ﻿@using WajbahAdmin.Models.Dto
-@model ChefDto
+@model ChefAdminDto
 
 <div class="container">
     <div class="profile-header">
-        <img src="https://via.placeholder.com/50" alt="Profile Picture">
+        <img src="@Model.ProfilePicture" alt="Profile Picture">
         <h2>@Model.ChefFirstName @Model.ChefLastName</h2>
         <div class="status ml-auto">
             <span class="status-indicator @(Model.Active == true ? "online" : "offline")"></span>

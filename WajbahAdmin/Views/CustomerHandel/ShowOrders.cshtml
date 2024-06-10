@@ -1,5 +1,5 @@
 ﻿@using WajbahAdmin.Models.Dto
-@model List<OrderDTO>
+@model List<OrderDto>
 
 <div class="container mt-5">
     <h2>Customer Orders</h2>
@@ -12,14 +12,15 @@
         @foreach (var order in Model)
         {
             <div class="order-item">
-                <p>Customer ID: @order.CustomerId</p>
+                <p>Customer ID: @order.CustomerId          Chef ID: @order.ChefId</p>
                 <p>Order ID: @order.OrderId</p>
+                <p>Date : @order.Date.ToShortDateString()</p>
                 <p>Total Price: @order.TotalPrice.ToString("C")</p>
                 <div class="order-details">
                     <strong>Order Details:</strong>
                     <p>@foreach(var item in order.MenuItems)
                         {
-                            <p>@item.Name</p>
+                            <p>@item</p>
                         }
                     </p>
                 </div>

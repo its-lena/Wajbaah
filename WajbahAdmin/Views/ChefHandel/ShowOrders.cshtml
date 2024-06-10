@@ -1,18 +1,18 @@
 ﻿@using WajbahAdmin.Models.Dto
-@model List<OrderDTO>
+@model List<OrderDto>
 
 <div class="container mt-5">
-    <h2>Customer Orders</h2>
+    <h2>Chef's Orders</h2>
     @if (Model == null || !Model.Any())
     {
-        <p>No orders available for this customer.</p>
+        <p>No orders available for this Chef.</p>
     }
     else
     {
         @foreach (var order in Model)
         {
             <div class="order-item">
-                <p>Customer ID: @order.CustomerId</p>
+                <p>Customer ID: @order.CustomerId       Chef ID: @order.ChefId</p>
                 <p>Order ID: @order.OrderId</p>
                 <p>Total Price: @order.TotalPrice.ToString("C")</p>
                 <div class="order-details">
@@ -20,7 +20,7 @@
                     <p>
                         @foreach (var item in order.MenuItems)
                         {
-                        <p>@item.Name</p>
+                        <p>@item</p>
                         }
                     </p>
                 </div>

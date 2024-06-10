@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq.Expressions;
 using Wajbah_API.Data;
@@ -13,11 +14,14 @@ namespace WajbahAdmin.Controllerss
     {
         private IUserHandelService<Customer> _userHandel;
         private IMapper _mapper;
+        private readonly ApplicationDbContext _context;
 
-        public CustomerHandelController(IUserHandelService<Customer> userHandel, IMapper mapper )
+
+        public CustomerHandelController(IUserHandelService<Customer> userHandel, IMapper mapper,ApplicationDbContext context )
         {
             _userHandel= userHandel;
             _mapper = mapper;
+            _context = context;
         }
 
         [HttpGet]
@@ -104,17 +108,25 @@ namespace WajbahAdmin.Controllerss
             return RedirectToAction(nameof(Search));
         }
 
-        [HttpGet("ShowOrders/{id:int}", Name = "ShowOrders")]
-        public async Task<IActionResult> ShowOrders(int id)
+        [HttpGet("CustomerShowOrders/{id:int}", Name = "CustomerShowOrders")]
+        public  IActionResult ShowOrders(int id)
         {
-            CustomerDto customer = new CustomerDto();
-            var result = await _userHandel.Get(c => c.CustomerId == id);
-            customer = _mapper.Map<CustomerDto>(result);
-            var orders = customer.Orders.ToList();
-            if (orders == null || !orders.Any())
-            {
-                return View(null);
-            }
+            var orders = (from o in _context.Orders
+                          where o.CustomerId == id
+                          select new OrderDto
+                          {
+                              OrderId = o.OrderId,
+                              ChefId = o.ChefId,
+                              Status = o.Status,
+                              MenuItems = (from omi in _context.OrderMenuItem
+                                           where omi.OrderId == o.OrderId
+                                           select omi.MenuItem.Name).ToList(),
+                              TotalPrice = (from omi in _context.OrderMenuItem
+                                            where omi.OrderId == o.OrderId
+                                            select omi.Size.ToLower() == "small" ? omi.Quantity * omi.MenuItem.SizesPrices.PriceSmall :
+                                                  omi.Size.ToLower() == "medium" ? omi.Quantity * omi.MenuItem.SizesPrices.PriceMedium :
+                                                  omi.Quantity * omi.MenuItem.SizesPrices.PriceLarge).Sum()
+                          }).ToList();
             return View(orders);
         }
     }

@@ -18,6 +18,6 @@ namespace WajbahAdmin.Models.Dto
         public bool State { get; set; }
         //public string UsedCoupones { get; set; }
         //Customer-Order relation (many to one)
-        public List<OrderDTO> Orders { get; set; }
+        public List<OrderDto> Orders { get; set; }
     }
 }

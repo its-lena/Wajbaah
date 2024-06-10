@@ -1,0 +1,59 @@
+﻿@using WajbahAdmin.Models.Dto
+<!-- Views/Orders/Index.cshtml -->
+@model List<OrderDto>
+
+
+    <title>Order List</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        .status-processing {
+            background-color: #f9f9f9;
+        }
+
+        .status-completed {
+            background-color: #d4edda;
+        }
+
+        .status-cancelled {
+            background-color: #f8d7da;
+        }
+    </style>
+
+    <h1>Order List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Order</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr class="status-@order.Status.ToLower()">
+                    <td>@order.OrderId</td>
+                    <td>@order.Date.ToString("MMMM d, yyyy")</td>
+                    <td>@order.Status</td>
+                    <td>@order.TotalPrice.ToString("c0")</td>
+                    <td><a href="@Url.Action("Details", "Orders", new { id = order.OrderId })">View</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+

@@ -5,6 +5,7 @@ using System;
 using System.Linq.Expressions;
 using Wajbah_API.Data;
 using Wajbah_API.Models;
+using Wajbah_API.Models.DTO;
 using WajbahAdmin.Models.Dto;
 using WajbahAdmin.Service;
 
@@ -30,7 +31,7 @@ namespace WajbahAdmin.Controllerss
             if (result != null)
             {
                 var orderedResults = result.OrderByDescending(c => c.ChefId).Take(7);
-                List<ChefDto> customers = _mapper.Map<List<ChefDto>>(orderedResults);
+                List<ChefAdminDto> customers = _mapper.Map<List<ChefAdminDto>>(orderedResults);
                 return View(customers);
             }
             return View();
@@ -78,17 +79,17 @@ namespace WajbahAdmin.Controllerss
             {
                 return View();
             }
-            List<ChefDto> chefs = _mapper.Map<List<ChefDto>>(result);
+            List<ChefAdminDto> chefs = _mapper.Map<List<ChefAdminDto>>(result);
             return View(chefs);
         }
 
         [HttpGet]
         public async Task<IActionResult> ChefDetails(string id)
         {
-            ChefDto chef = new ChefDto();
+            ChefAdminDto chef = new ChefAdminDto();
           
             var result = await _userHandel.Get(c => c.ChefId == id);
-            chef = _mapper.Map<ChefDto>(result);
+            chef = _mapper.Map<ChefAdminDto>(result);
 
             return View(chef);
         }
@@ -105,24 +106,29 @@ namespace WajbahAdmin.Controllerss
             return RedirectToAction(nameof(Search));
         }
 
-        [HttpGet( Name = "ShowOrders")]
-         public async Task<IActionResult> ShowOrders(string id)
+        [HttpGet("ChefShowOrders/{id}", Name = "ChefShowOrders")]
+         public IActionResult ShowOrders(string id)
          {
-            /*var result = from omi in _context.Order
-                         join i in _context.Items on omi.MenuItemId equals i.ItemId
-                         where i.ChefId == chefId
-                         select new
-                         {
-                             omi.OrderId,
-                             omi.MenuItemId,
-                             omi.Quantity,
-                             TotalItem = omi.Size.ToLower() == "small" ? omi.Quantity * omi.MenuItem.SizesPrices.PriceSmall :
-                                         omi.Size.ToLower() == "medium" ? omi.Quantity * omi.MenuItem.SizesPrices.PriceMedium :
-                                         omi.Quantity * omi.MenuItem.SizesPrices.PriceLarge
-                         };
+            var orders = (from o in _context.Orders
+                          where o.ChefId == id
+                          select new OrderDto
+                          {
+                              OrderId = o.OrderId,
+                              CustomerId=o.CustomerId,
+                              ChefId=o.ChefId,
+                              Status = o.Status,
+                              MenuItems = (from omi in _context.OrderMenuItem
+                                           where omi.OrderId == o.OrderId
+                                           select omi.MenuItem.Name).ToList(),
+                              TotalPrice = (from omi in _context.OrderMenuItem
+                                            where omi.OrderId == o.OrderId
+                                            select omi.Size.ToLower() == "small" ? omi.Quantity * omi.MenuItem.SizesPrices.PriceSmall :
+                                                  omi.Size.ToLower() == "medium" ? omi.Quantity * omi.MenuItem.SizesPrices.PriceMedium :
+                                                  omi.Quantity * omi.MenuItem.SizesPrices.PriceLarge).Sum()
+                          }).ToList();
 
-            return View(orders);*/
-            return View();
+
+            return View(orders);
          }
     }
 }

@@ -10,13 +10,13 @@ namespace WajbahAdmin
         {
             
 
-			CreateMap<Chef, ChefDto>().ReverseMap();
+			CreateMap<Chef, ChefAdminDto>().ReverseMap();
        
             
             CreateMap<Customer, CustomerDto>().ReverseMap();
          
 
-            CreateMap<Order, OrderDTO>().ReverseMap();
+            CreateMap<Order, OrderDto>().ReverseMap();
            
 
             

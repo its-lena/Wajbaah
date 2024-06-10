@@ -2,7 +2,7 @@
 
 namespace WajbahAdmin.Models.Dto
 {
-    public class ChefDto
+    public class ChefAdminDto
     {
         public string ChefId { get; set; }
         public int PhoneNumber { get; set; }
