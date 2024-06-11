@@ -259,6 +259,7 @@ namespace Wajbah_API.Data
 		public DbSet<Order> Orders { get; set; }
 		public DbSet<PromoCode> PromoCodes { get; set; }
         public DbSet<ItemRateRecord> ItemRateRecords { get; set; }
+        public DbSet<OrderMenuItem> OrderMenuItem{ get; set; }
 
     }
 }

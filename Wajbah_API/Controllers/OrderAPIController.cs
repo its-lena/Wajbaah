@@ -234,8 +234,8 @@ namespace Wajbah_API.Controllers
 		}
         [HttpGet("GetOrdersRequests", Name = "GetOrdersRequests")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
         public async Task<ActionResult<APIResponse>> GetOrdersRequests(string chefId)
         {
@@ -257,6 +257,48 @@ namespace Wajbah_API.Controllers
 
 
                 IEnumerable<OrderDTO> ordersDto = _mapper.Map<IEnumerable<OrderDTO>>(orders);
+
+                _response.Result = ordersDto;
+
+                _response.StatusCode = HttpStatusCode.OK;
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages =
+                    new List<string>() { ex.Message };
+            }
+            return _response;
+        }
+		
+		[HttpPut("ChangeOrderState", Name = "ChangeOrderState")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+        public async Task<ActionResult<APIResponse>> ChangeOrderState([FromQuery]int orderId,[FromQuery] string status)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(status))
+                {
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccess = false;
+                    return BadRequest(_response);
+                }
+                var order = await _dbItem.GetAsync(o=>o.OrderId==orderId);
+                if (order == null)
+                {
+                    _response.IsSuccess = false;
+                    _response.StatusCode = HttpStatusCode.NotFound;
+					_response.ErrorMessages.Add("No order with this ID");
+                    return NotFound(_response);
+                }
+
+				order.Status= status;
+				await _dbItem.UpdateAsync(order);
+                OrderDTO ordersDto = _mapper.Map<OrderDTO>(order);
 
                 _response.Result = ordersDto;
 
