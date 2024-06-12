@@ -263,18 +263,25 @@ namespace Wajbah_API.Controllers
                     _response.IsSuccess = false;
                     return BadRequest(_response);
                 }
-                var orders = await _dbItem.GetAllAsync(o => o.ChefId == chefId && o.Status=="Pending", includeProperties: x => x.MenuItems);
-                if (orders == null)
-                {
-                    _response.IsSuccess = false;
-                    _response.StatusCode = HttpStatusCode.NotFound;
-                    return NotFound(_response);
-                }
+                var orders = await _dbOrder.GetAllAsync(o => o.ChefId == chefId && o.Status=="Pending", includeProperties: x => x.MenuItems);
 
+				if (orders == null || !orders.Any())
+				{
+					_response.IsSuccess = false;
+					_response.StatusCode = HttpStatusCode.NotFound;
+					return NotFound(_response);
+				}
 
-                IEnumerable<OrderDTO> ordersDto = _mapper.Map<IEnumerable<OrderDTO>>(orders);
+				var ordersDto = orders.Select(order =>
+				{
+					var orderDto = _mapper.Map<OrderDTO>(order);
+					orderDto.MenuItems = order.OrderMenuItems.Select(omi => _mapper.Map<Menu_ItemDTO>(omi.MenuItem)).ToList();
+					orderDto.Quanitities = order.OrderMenuItems.Select(o => o.Quantity).ToList();
+					orderDto.Sizes = order.OrderMenuItems.Select(o => o.Size).ToList();
+					return orderDto;
+				});
 
-                _response.Result = ordersDto;
+				_response.Result = ordersDto;
 
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
