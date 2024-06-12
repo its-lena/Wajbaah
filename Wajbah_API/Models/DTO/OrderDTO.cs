@@ -16,7 +16,12 @@ namespace Wajbah_API.Models.DTO
 		public decimal DeliveryFees { get; set; }
 		[Required]
 		public int DeliveryNumber { get; set; }
-		[Required]
+        [Required]
+        public string Address { get; set; }
+        public int? CustomerPhoneNumber { get; set; }
+        public string? CustomerFirstName { get; set; }
+        public string? CustomerLastName { get; set; }
+        [Required]
 		public DateTime CreatedOn { get; set; }
 		[Required]
 		public DateTime DeliveryTime { get; set; }

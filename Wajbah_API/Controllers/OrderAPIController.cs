@@ -157,7 +157,7 @@ namespace Wajbah_API.Controllers
 					ModelState.AddModelError("Custom-Error", "Customer ID is not found");
 					return BadRequest(ModelState);
 				}
-
+			
 				// Validate Chef
 				var chef = await _dbChef.GetAsync(c => c.ChefId == orderCreate.ChefId);
 				if (chef == null)
@@ -197,12 +197,24 @@ namespace Wajbah_API.Controllers
 						return BadRequest(ModelState);
 					}
 				}
+                
 
-				// Map the OrderCreateDTO to Order entity
-				var order = _mapper.Map<Order>(orderCreate);
+                // Map the OrderCreateDTO to Order entity
+                var order = _mapper.Map<Order>(orderCreate);
 
-				// Assign related entities
-				order.Customer = customer;
+				//retrieve customer info
+				var customerId = await _dbCustomer.GetAsync(c => c.CustomerId == orderCreate.CustomerId);
+                if (customer == null)
+                {
+                    ModelState.AddModelError("Custom-Error", "Customer ID is not found");
+                    return BadRequest(ModelState);
+                }
+				order.CustomerPhoneNumber = customerId.PhoneNumber;
+				order.CustomerFirstName = customerId.FirstName;
+				order.CustomerLastName = customerId.LastName;
+
+                // Assign related entities
+                order.Customer = customer;
 				order.Chef = chef;
 				order.PromoCode = promoCode;
 				order.Company = company;
