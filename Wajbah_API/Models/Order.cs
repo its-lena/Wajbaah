@@ -27,7 +27,6 @@ namespace Wajbah_API.Models
 		public bool CashDelivered { get; set; }
 		public string EstimatedTime { get; set; }
 		public string Address { get; set; }
-		public int? CustomerPhoneNumber { get; set; }
 		public string? CustomerFirstName { get; set; }
 		public string? CustomerLastName { get; set; }
 		//promocode-order relation (many to one)

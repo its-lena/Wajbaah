@@ -209,7 +209,6 @@ namespace Wajbah_API.Controllers
                     ModelState.AddModelError("Custom-Error", "Customer ID is not found");
                     return BadRequest(ModelState);
                 }
-				order.CustomerPhoneNumber = customerId.PhoneNumber;
 				order.CustomerFirstName = customerId.FirstName;
 				order.CustomerLastName = customerId.LastName;
 

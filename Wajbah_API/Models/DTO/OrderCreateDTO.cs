@@ -18,7 +18,6 @@ namespace Wajbah_API.Models.DTO
 		public int DeliveryNumber { get; set; }
         [Required]
         public string Address { get; set; }
-        public int? CustomerPhoneNumber { get; set; }
         public string? CustomerFirstName { get; set; }
         public string? CustomerLastName { get; set; }
         [Required]
