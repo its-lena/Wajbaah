@@ -22,9 +22,12 @@ namespace Wajbah_API.Controllers
 		protected readonly IPromoCodeRepository _dbPromoCode;
 		private readonly IChefRepository _dbChef;
 		private readonly ICustomerRepository _dbCustomer;
+		private readonly IOrderRepository _dbOrder;
 		//will be replaced with needed IRepositories
 		private readonly ApplicationDbContext _db;
-		public OrderAPIController(ApplicationDbContext db, IOrderRepository dbItem, IMapper mapper, IMenuItemRepository dbMenuItem, IPromoCodeRepository dbPromoCode, IChefRepository dbChef, ICustomerRepository dbCustomer)
+		public OrderAPIController(ApplicationDbContext db, IOrderRepository dbItem, IMapper mapper, 
+			IMenuItemRepository dbMenuItem, IPromoCodeRepository dbPromoCode, IChefRepository dbChef,
+			ICustomerRepository dbCustomer, IOrderRepository dbOrder)
 		{
 			_dbItem = dbItem;
 			_mapper = mapper;
@@ -34,6 +37,7 @@ namespace Wajbah_API.Controllers
 			_dbPromoCode = dbPromoCode;
 			_dbChef = dbChef;
 			_dbCustomer = dbCustomer;
+			_dbOrder = dbOrder;
 		}
 
 		[HttpGet]
@@ -313,5 +317,44 @@ namespace Wajbah_API.Controllers
             }
             return _response;
         }
+		
+		[HttpGet("OrderTracking", Name ="OrderTracking")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		public async Task<ActionResult<APIResponse>> OrderTracking(int orderId)
+		{
+			try
+			{
+				if (orderId == 0)
+				{
+					_response.StatusCode = HttpStatusCode.BadRequest;
+					_response.IsSuccess = false;
+					return BadRequest(_response);
+				}
+				Order order = await _dbOrder.GetAsync(o => o.OrderId==orderId);
+
+				if (order == null)
+				{
+					_response.Result = "Order not found";
+					_response.IsSuccess = false;
+					_response.StatusCode = HttpStatusCode.NotFound;
+					return NotFound(_response);
+				}
+
+				_response.Result = order.Status;
+				_response.StatusCode = HttpStatusCode.OK;
+				return Ok(_response);
+			}
+			catch(Exception ex)
+			{
+				_response.IsSuccess = false;
+				_response.ErrorMessages =
+					new List<string>() { ex.Message };
+			}
+
+			return _response;
+		}
     }
+
 	}
