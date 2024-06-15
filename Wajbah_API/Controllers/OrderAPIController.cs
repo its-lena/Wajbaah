@@ -293,6 +293,52 @@ namespace Wajbah_API.Controllers
             }
             return _response;
         }
+		[HttpGet("GetChefOrders", Name = "GetChefOrders")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+        public async Task<ActionResult<APIResponse>> GetChefOrders(string chefId)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(chefId))
+                {
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.IsSuccess = false;
+                    return BadRequest(_response);
+                }
+                var orders = await _dbOrder.GetAllAsync(o => o.ChefId == chefId, includeProperties: x => x.MenuItems);
+
+				if (orders == null || !orders.Any())
+				{
+					_response.IsSuccess = false;
+					_response.StatusCode = HttpStatusCode.NotFound;
+					return NotFound(_response);
+				}
+
+				var ordersDto = orders.Select(order =>
+				{
+					var orderDto = _mapper.Map<OrderDTO>(order);
+					orderDto.MenuItems = order.OrderMenuItems.Select(omi => _mapper.Map<Menu_ItemDTO>(omi.MenuItem)).ToList();
+					orderDto.Quanitities = order.OrderMenuItems.Select(o => o.Quantity).ToList();
+					orderDto.Sizes = order.OrderMenuItems.Select(o => o.Size).ToList();
+					return orderDto;
+				});
+
+				_response.Result = ordersDto;
+
+                _response.StatusCode = HttpStatusCode.OK;
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages =
+                    new List<string>() { ex.Message };
+            }
+            return _response;
+        }
 		
 		[HttpPut("ChangeOrderState", Name = "ChangeOrderState")]
         [ProducesResponseType(StatusCodes.Status200OK)]
