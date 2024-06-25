@@ -47,6 +47,15 @@ namespace Wajbah_API.Controllers
 		[HttpPost("register")]
 		public async Task<IActionResult> Register([FromBody] RegistrationRequestDTO model)
 		{
+
+			if (model.PhoneNumber.ToString().Length != 10)
+			{
+				_response.StatusCode = HttpStatusCode.BadRequest;
+				_response.IsSuccess = false;
+				_response.ErrorMessages.Add("Phone Number must be 10 digits!");
+				return BadRequest(_response);
+			}
+
 			bool isUserUnique = _userRepo.IsUniqueUser(model.PhoneNumber);
 
 			if(!isUserUnique)
@@ -56,7 +65,6 @@ namespace Wajbah_API.Controllers
 				_response.ErrorMessages.Add("Phone Number already exists!");
 				return BadRequest(_response);
 			}
-
 			var cust = await _userRepo.Register(model);
 
 			if( cust == null)
